@@ -1,0 +1,613 @@
+/* ============================================
+   BITO GAMES — Matrix Green Theme
+   ============================================ */
+
+:root {
+  --green-bright: #00ff41;
+  --green-mid: #00cc33;
+  --green-dim: #008f11;
+  --green-dark: #003b00;
+  --green-glow: #00ff4180;
+  --bg: #000000;
+  --bg-soft: #050a05;
+  --bg-panel: rgba(0, 20, 0, 0.65);
+  --bg-panel-strong: rgba(0, 30, 0, 0.85);
+  --border: rgba(0, 255, 65, 0.25);
+  --border-strong: rgba(0, 255, 65, 0.55);
+  --text: #b8ffc8;
+  --text-dim: #6fa080;
+  --warn: #ff003c;
+
+  --font-mono: 'Share Tech Mono', 'JetBrains Mono', 'Courier New', monospace;
+  --font-display: 'Orbitron', 'Share Tech Mono', monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-mono);
+  line-height: 1.6;
+  overflow-x: hidden;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Matrix rain canvas — behind everything */
+#matrix-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Subtle scanline overlay for CRT feel */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0,
+    transparent 2px,
+    rgba(0, 255, 65, 0.025) 2px,
+    rgba(0, 255, 65, 0.025) 4px
+  );
+  z-index: 1;
+  mix-blend-mode: screen;
+}
+
+a {
+  color: var(--green-bright);
+  text-decoration: none;
+  border-bottom: 1px dashed transparent;
+  transition: border-color 0.2s, text-shadow 0.2s;
+}
+
+a:hover {
+  border-bottom-color: var(--green-bright);
+  text-shadow: 0 0 8px var(--green-glow);
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 2rem;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+
+.logo {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1.4rem;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 0.1em;
+}
+
+.logo-bracket {
+  color: var(--green-dim);
+}
+
+.logo-text {
+  color: var(--green-bright);
+  text-shadow: 0 0 12px var(--green-glow);
+}
+
+.logo-text--alt {
+  color: var(--text);
+  margin-left: 0.1em;
+}
+
+.nav {
+  display: flex;
+  gap: 1.8rem;
+}
+
+.nav a {
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  border-bottom: none;
+}
+
+.nav a:hover {
+  color: var(--green-bright);
+  text-shadow: 0 0 6px var(--green-glow);
+}
+
+/* ============================================
+   HERO
+   ============================================ */
+
+.hero {
+  min-height: calc(100vh - 80px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+}
+
+.hero-content {
+  max-width: 900px;
+  text-align: left;
+}
+
+.terminal-prefix {
+  font-size: 1rem;
+  color: var(--green-dim);
+  margin-bottom: 1rem;
+  letter-spacing: 0.05em;
+}
+
+.terminal-prefix::after {
+  content: "_";
+  animation: blink 1s steps(2, start) infinite;
+}
+
+@keyframes blink {
+  to { visibility: hidden; }
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(2.5rem, 8vw, 6rem);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  margin-bottom: 1.5rem;
+  color: var(--green-bright);
+  text-shadow:
+    0 0 20px var(--green-glow),
+    0 0 40px rgba(0, 255, 65, 0.3);
+}
+
+.hero-title-line2 {
+  display: block;
+  color: var(--text);
+  text-shadow: 0 0 8px rgba(184, 255, 200, 0.4);
+}
+
+.hero-tagline {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: var(--text);
+  margin-bottom: 1.5rem;
+  max-width: 700px;
+}
+
+.hero-tagline strong {
+  color: var(--green-bright);
+  font-weight: normal;
+  text-shadow: 0 0 6px var(--green-glow);
+}
+
+.hero-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--green-mid);
+  font-size: 0.95rem;
+  letter-spacing: 0.1em;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border);
+  background: var(--bg-panel);
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--green-bright);
+  box-shadow: 0 0 10px var(--green-bright);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+/* Glitch effect on hero title */
+.glitch {
+  position: relative;
+  display: inline-block;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.glitch::before {
+  color: #00ffff;
+  animation: glitch-1 4s infinite linear alternate-reverse;
+  clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
+  opacity: 0.5;
+}
+
+.glitch::after {
+  color: #ff00aa;
+  animation: glitch-2 3s infinite linear alternate-reverse;
+  clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
+  opacity: 0.5;
+}
+
+@keyframes glitch-1 {
+  0%, 90%, 100% { transform: translate(0); }
+  92% { transform: translate(-3px, 1px); }
+  94% { transform: translate(3px, -1px); }
+  96% { transform: translate(-2px, -1px); }
+  98% { transform: translate(2px, 1px); }
+}
+
+@keyframes glitch-2 {
+  0%, 88%, 100% { transform: translate(0); }
+  90% { transform: translate(3px, 1px); }
+  92% { transform: translate(-3px, -1px); }
+  94% { transform: translate(2px, 0); }
+  96% { transform: translate(-2px, 0); }
+}
+
+/* ============================================
+   SECTION COMMON
+   ============================================ */
+
+.section-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  color: var(--green-bright);
+  margin-bottom: 2rem;
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 8px var(--green-glow);
+}
+
+main > section {
+  padding: 5rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ============================================
+   SIGNUP
+   ============================================ */
+
+.signup-box {
+  background: var(--bg-panel-strong);
+  border: 1px solid var(--border-strong);
+  padding: 3rem 2rem;
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+}
+
+.signup-box::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  bottom: -1px;
+  border: 1px solid var(--green-bright);
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.signup-desc {
+  color: var(--text);
+  margin-bottom: 2rem;
+  font-size: 1.05rem;
+}
+
+.signup-form {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.signup-form input[type="email"] {
+  flex: 1;
+  min-width: 250px;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid var(--border);
+  color: var(--green-bright);
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  padding: 0.85rem 1rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.signup-form input[type="email"]:focus {
+  border-color: var(--green-bright);
+  box-shadow: 0 0 12px var(--green-glow);
+}
+
+.signup-form input[type="email"]::placeholder {
+  color: var(--text-dim);
+}
+
+.signup-form button {
+  background: var(--green-bright);
+  color: #000;
+  border: none;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.1em;
+  padding: 0 1.5rem;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+}
+
+.signup-form button:hover {
+  background: #fff;
+  box-shadow: 0 0 20px var(--green-bright);
+}
+
+.signup-form button:active {
+  transform: scale(0.97);
+}
+
+.signup-note {
+  margin-top: 1.5rem;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+}
+
+/* ============================================
+   GAMES
+   ============================================ */
+
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.game-card {
+  position: relative;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  padding: 2rem;
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.2s;
+}
+
+.game-card:hover {
+  border-color: var(--green-bright);
+  box-shadow: 0 0 30px rgba(0, 255, 65, 0.2);
+  transform: translateY(-4px);
+}
+
+.game-card--featured {
+  border-color: var(--border-strong);
+}
+
+.game-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  color: #000;
+  background: var(--green-bright);
+  padding: 0.25rem 0.7rem;
+  margin-bottom: 1rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+
+.game-badge--soon {
+  background: var(--green-dim);
+  color: var(--text);
+}
+
+.game-title {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--green-bright);
+  margin-bottom: 0.3rem;
+  text-shadow: 0 0 8px var(--green-glow);
+  letter-spacing: 0.02em;
+}
+
+.game-title span {
+  color: var(--text);
+}
+
+.game-subtitle {
+  color: var(--text-dim);
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+  letter-spacing: 0.05em;
+}
+
+.game-description {
+  color: var(--text);
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.game-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.2rem;
+}
+
+.tag {
+  font-size: 0.75rem;
+  color: var(--green-mid);
+  background: rgba(0, 255, 65, 0.08);
+  border: 1px solid var(--border);
+  padding: 0.25rem 0.6rem;
+  letter-spacing: 0.05em;
+}
+
+.game-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  border-top: 1px dashed var(--border);
+  padding-top: 1rem;
+}
+
+.game-card--placeholder {
+  opacity: 0.7;
+  border-style: dashed;
+}
+
+.game-card--placeholder .game-title {
+  color: var(--text-dim);
+  text-shadow: none;
+}
+
+/* ============================================
+   ABOUT
+   ============================================ */
+
+.about-content {
+  max-width: 800px;
+  color: var(--text);
+  font-size: 1.05rem;
+}
+
+.about-content p {
+  margin-bottom: 1.2rem;
+}
+
+.about-content strong {
+  color: var(--green-bright);
+  font-weight: normal;
+  text-shadow: 0 0 6px var(--green-glow);
+}
+
+.about-philosophy {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border-left: 3px solid var(--green-bright);
+  background: var(--bg-panel);
+  font-style: italic;
+  color: var(--green-mid);
+}
+
+.quote-mark {
+  color: var(--green-bright);
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+
+.site-footer {
+  border-top: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.9);
+  padding: 2.5rem 2rem;
+  margin-top: 3rem;
+}
+
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+.footer-logo {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--green-bright);
+  letter-spacing: 0.1em;
+  text-shadow: 0 0 8px var(--green-glow);
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+  color: var(--text-dim);
+}
+
+.sep {
+  color: var(--green-dim);
+}
+
+.footer-copy {
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 640px) {
+  .site-header {
+    padding: 1rem;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+
+  .nav {
+    gap: 1.2rem;
+  }
+
+  main > section {
+    padding: 3rem 1rem;
+  }
+
+  .signup-form {
+    flex-direction: column;
+  }
+
+  .signup-form input[type="email"] {
+    min-width: 100%;
+  }
+
+  .signup-form button {
+    padding: 0.85rem 1.5rem;
+  }
+}

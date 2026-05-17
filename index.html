@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BITO GAMES — Native Linux Games</title>
+  <meta name="description" content="Independent game studio building native Linux games. Currently in development: NovaCore — cyberpunk city-builder." />
+  <meta name="theme-color" content="#00ff41" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <canvas id="matrix-canvas" aria-hidden="true"></canvas>
+
+  <header class="site-header">
+    <div class="logo">
+      <span class="logo-bracket">[</span><span class="logo-text">BITO</span><span class="logo-text logo-text--alt">GAMES</span><span class="logo-bracket">]</span>
+    </div>
+    <nav class="nav">
+      <a href="#games">Games</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <div class="terminal-prefix">~/bitogames $</div>
+        <h1 class="hero-title">
+          <span class="glitch" data-text="NATIVE LINUX">NATIVE LINUX</span>
+          <span class="hero-title-line2">GAMES</span>
+        </h1>
+        <p class="hero-tagline">
+          Independent studio crafting games <strong>built from the ground up</strong> for Linux and Steam Deck.
+        </p>
+        <p class="hero-status">
+          <span class="status-dot"></span>
+          STATUS: FIRST TITLE IN DEVELOPMENT
+        </p>
+      </div>
+    </section>
+
+    <section class="signup" id="contact">
+      <div class="signup-box">
+        <h2 class="section-title">// JOIN THE SIGNAL</h2>
+        <p class="signup-desc">
+          Get notified when the first game drops. No spam, just launch news.
+        </p>
+        <form class="signup-form" id="signup-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+          <input
+            type="email"
+            name="email"
+            placeholder="your@email.com"
+            required
+            autocomplete="email"
+            aria-label="Email address"
+          />
+          <button type="submit">NOTIFY ME &rarr;</button>
+        </form>
+        <p class="signup-note" id="signup-note">Or write to <a href="mailto:info@bitogames.com">info@bitogames.com</a></p>
+      </div>
+    </section>
+
+    <section class="games" id="games">
+      <h2 class="section-title">// CURRENT PROJECTS</h2>
+      <div class="game-grid">
+        <article class="game-card game-card--featured">
+          <div class="game-badge">IN DEVELOPMENT</div>
+          <h3 class="game-title">NOVA<span>CORE</span></h3>
+          <p class="game-subtitle">Cyberpunk City-Builder · Co-op</p>
+          <p class="game-description">
+            Float above a neon grid. Build your district. Manage citizens, taxes, and the welfare slider. Two players, one keyboard. Native Linux. Native Steam Deck.
+          </p>
+          <div class="game-tags">
+            <span class="tag">City Builder</span>
+            <span class="tag">Cyberpunk</span>
+            <span class="tag">Co-op</span>
+            <span class="tag">Linux Native</span>
+          </div>
+          <div class="game-meta">
+            <span>Engine: Godot 4</span>
+            <span>Target: Q4 2026</span>
+          </div>
+        </article>
+
+        <article class="game-card game-card--placeholder">
+          <div class="game-badge game-badge--soon">UNANNOUNCED</div>
+          <h3 class="game-title">???</h3>
+          <p class="game-subtitle">Stay tuned</p>
+          <p class="game-description">
+            Next project under wraps. Subscribe above to hear it first.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="about" id="about">
+      <h2 class="section-title">// ABOUT</h2>
+      <div class="about-content">
+        <p>
+          BITO GAMES is a solo indie studio based on the Côte d'Azur.
+          We make games <strong>natively</strong> for Linux — no compatibility layers, no Wine, no compromise.
+        </p>
+        <p>
+          Built with <a href="https://godotengine.org" target="_blank" rel="noopener">Godot 4</a>, shipped on <a href="https://store.steampowered.com" target="_blank" rel="noopener">Steam</a>, <a href="https://itch.io" target="_blank" rel="noopener">Itch.io</a>, and right here.
+        </p>
+        <p class="about-philosophy">
+          <span class="quote-mark">&laquo;</span>
+          The Steam Deck proved Linux gaming is the future. We're building for it.
+          <span class="quote-mark">&raquo;</span>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-logo">[BITO/GAMES]</div>
+      <div class="footer-links">
+        <a href="https://github.com/sandorbito" target="_blank" rel="noopener">GitHub</a>
+        <span class="sep">·</span>
+        <a href="mailto:info@bitogames.com">info@bitogames.com</a>
+        <span class="sep">·</span>
+        <a href="https://sandorbito.com">sandorbito.com</a>
+      </div>
+      <div class="footer-copy">
+        &copy; 2026 BITO GAMES · Côte d'Azur · Made on Linux
+      </div>
+    </div>
+  </footer>
+
+  <script src="matrix.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
