@@ -1,0 +1,15 @@
+Contact: mailto:info@bitogames.com
+Expires: 2027-05-17T00:00:00.000Z
+Preferred-Languages: en, hu
+Canonical: https://bitogames.com/.well-known/security.txt
+
+# BITO GAMES — Security Policy
+#
+# If you have discovered a security vulnerability on bitogames.com or
+# in any of our games, please report it responsibly by emailing
+# info@bitogames.com. We will respond within 7 days.
+#
+# Scope: bitogames.com (static site, GitHub Pages)
+# Out of scope: phishing reports, social engineering, DDoS reports
+#
+# Thank you for keeping the indie Linux gaming community safer.
