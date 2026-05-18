@@ -35,7 +35,7 @@ const TRANSLATIONS = {
     "dev.side.python.desc": "Developer tools, data analysis scripts, and desktop utilities.",
 
     "about.title": "// ABOUT",
-    "about.p1.html": "BITO GAMES is a solo indie studio based on the <strong>Côte d'Azur</strong>. We build software and games <strong>natively</strong> for the platforms we love — Linux, macOS, iOS, iPadOS, Android.",
+    "about.p1.html": "BITO GAMES is an <strong>independent</strong> indie studio based on the <strong>Côte d'Azur</strong>. We build software and games <strong>natively</strong> for the platforms we love — Linux, macOS, iOS, iPadOS, Android.",
     "about.p2.html": "Core engine: <a href=\"https://godotengine.org\" target=\"_blank\" rel=\"noopener\">Godot 4</a>, with native <strong>Swift / SwiftUI</strong> for the Apple ecosystem and <strong>Python</strong> for tooling. Distributed on <a href=\"https://store.steampowered.com\" target=\"_blank\" rel=\"noopener\">Steam</a>, <a href=\"https://itch.io\" target=\"_blank\" rel=\"noopener\">Itch.io</a>, the App Store, and right here.",
     "about.quote": "Cross-platform — but always native.",
 
@@ -75,7 +75,7 @@ const TRANSLATIONS = {
     "dev.side.python.desc": "Fejlesztői eszközök, adatelemző szkriptek és asztali segédprogramok.",
 
     "about.title": "// RÓLUNK",
-    "about.p1.html": "A BITO GAMES egy egyszemélyes indie stúdió a <strong>Francia Riviérán</strong>. Szoftvereket és játékokat fejlesztünk <strong>natívan</strong> azokra a platformokra, amiket szeretünk — Linux, macOS, iOS, iPadOS, Android.",
+    "about.p1.html": "A BITO GAMES egy <strong>független</strong> indie stúdió a <strong>Francia Riviérán</strong>. Szoftvereket és játékokat fejlesztünk <strong>natívan</strong> azokra a platformokra, amiket szeretünk — Linux, macOS, iOS, iPadOS, Android.",
     "about.p2.html": "Fő motor: <a href=\"https://godotengine.org\" target=\"_blank\" rel=\"noopener\">Godot 4</a>, natív <strong>Swift / SwiftUI</strong> az Apple ökoszisztémára és <strong>Python</strong> az eszközökhöz. Disztribúció: <a href=\"https://store.steampowered.com\" target=\"_blank\" rel=\"noopener\">Steam</a>, <a href=\"https://itch.io\" target=\"_blank\" rel=\"noopener\">Itch.io</a>, App Store, és itt.",
     "about.quote": "Cross-platform — de mindig natív.",
 
