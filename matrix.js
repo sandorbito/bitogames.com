@@ -1,71 +1,132 @@
-// Matrix rain — canvas background animation.
-// Optimized: low FPS, low alpha, GPU-friendly.
-
+/* =====================================================================
+   matrix.js — ambient "rain" canvas for BITO Games / NOVA Universe
+   This is AMBIENT TEXTURE, not wallpaper.
+   - very low opacity (set in CSS) + slowed cadence
+   - throttled to a low frame rate so it stays cheap on M1/8GB & low-end Linux
+   - single canvas, no WebGL
+   - fully gated by prefers-reduced-motion (won't run at all)
+   - paused when the tab is hidden
+   ===================================================================== */
 (function () {
-  const canvas = document.getElementById('matrix-canvas');
+  "use strict";
+
+  var canvas = document.getElementById("matrix-canvas");
   if (!canvas) return;
-  const ctx = canvas.getContext('2d');
 
-  // Katakana + alphanumeric chars give the iconic Matrix look
-  const chars = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン0123456789';
-  const charArray = chars.split('');
+  var reduceMotion = window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  let fontSize = 16;
-  let columns = 0;
-  let drops = [];
-
-  function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    columns = Math.floor(canvas.width / fontSize);
-    drops = new Array(columns).fill(1).map(() => Math.random() * -100);
+  // Respect reduced motion: leave the canvas blank and never animate.
+  if (reduceMotion) {
+    canvas.style.display = "none";
+    return;
   }
 
-  resize();
-  window.addEventListener('resize', resize);
+  var ctx = canvas.getContext("2d", { alpha: true });
+  if (!ctx) return;
 
-  let lastTime = 0;
-  const interval = 60; // ms between frames — slower = more readable, less CPU
+  // NOVA-flavoured glyph set: katakana hints + tech digits + light glyphs.
+  var GLYPHS = "01アイウカキサソタヌネハユラリ<>/[]{}=*+ノ#░▒".split("");
 
-  function draw(now) {
-    if (now - lastTime > interval) {
-      // Fade previous frame, gives the trail effect
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+  // Accent palette — violet-leaning with rare cyan/amber sparks.
+  var COLORS = ["#8b6cff", "#8b6cff", "#8b6cff", "#2ff3ff", "#ffc14d"];
 
-      ctx.font = fontSize + "px 'Share Tech Mono', monospace";
+  var fontSize = 16;
+  var columns = 0;
+  var drops = [];          // y head position per column (in cells)
+  var dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-      for (let i = 0; i < drops.length; i++) {
-        const text = charArray[Math.floor(Math.random() * charArray.length)];
-        const x = i * fontSize;
-        const y = drops[i] * fontSize;
+  // Throttle: target ~12fps. Slow cadence = ambient, premium, low CPU.
+  var FRAME_MS = 1000 / 12;
+  var lastFrame = 0;
+  var rafId = null;
+  var running = false;
 
-        // Head of the drop is brighter
-        if (Math.random() > 0.975) {
-          ctx.fillStyle = '#aaffaa';
-        } else {
-          ctx.fillStyle = '#00ff41';
-        }
-        ctx.fillText(text, x, y);
+  function size() {
+    var w = window.innerWidth;
+    var h = window.innerHeight;
+    canvas.width = Math.floor(w * dpr);
+    canvas.height = Math.floor(h * dpr);
+    canvas.style.width = w + "px";
+    canvas.style.height = h + "px";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-        // Reset drop randomly when off-screen
-        if (y > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
-        drops[i]++;
+    columns = Math.ceil(w / fontSize);
+    drops = new Array(columns);
+    for (var i = 0; i < columns; i++) {
+      // stagger starts so the field doesn't pulse in unison
+      drops[i] = Math.floor(Math.random() * -50);
+    }
+    ctx.font = fontSize + "px 'JetBrains Mono', monospace";
+    ctx.textBaseline = "top";
+  }
+
+  function draw() {
+    var w = window.innerWidth;
+    var h = window.innerHeight;
+
+    // Fade prior frame — long trails, gentle. Matches --bg (#07080c).
+    ctx.fillStyle = "rgba(7, 8, 12, 0.22)";
+    ctx.fillRect(0, 0, w, h);
+
+    for (var i = 0; i < columns; i++) {
+      var x = i * fontSize;
+      var y = drops[i] * fontSize;
+
+      var glyph = GLYPHS[(Math.random() * GLYPHS.length) | 0];
+
+      // Mostly violet; occasional accent spark for the lead glyph.
+      var color = COLORS[0];
+      if (Math.random() > 0.985) {
+        color = COLORS[(Math.random() * COLORS.length) | 0];
       }
+      ctx.fillStyle = color;
+      ctx.fillText(glyph, x, y);
 
-      lastTime = now;
+      // Reset column once it's well past the bottom, with random gaps.
+      if (y > h && Math.random() > 0.975) {
+        drops[i] = Math.floor(Math.random() * -20);
+      }
+      drops[i]++;
     }
-    requestAnimationFrame(draw);
   }
 
-  // Pause when tab hidden to save CPU
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-      // animation naturally pauses since rAF stops
+  function loop(now) {
+    if (!running) return;
+    rafId = window.requestAnimationFrame(loop);
+    if (now - lastFrame < FRAME_MS) return;
+    lastFrame = now;
+    draw();
+  }
+
+  function start() {
+    if (running) return;
+    running = true;
+    lastFrame = 0;
+    rafId = window.requestAnimationFrame(loop);
+  }
+
+  function stop() {
+    running = false;
+    if (rafId) {
+      window.cancelAnimationFrame(rafId);
+      rafId = null;
     }
+  }
+
+  // Pause when the tab is hidden — don't burn cycles in the background.
+  document.addEventListener("visibilitychange", function () {
+    if (document.hidden) stop();
+    else start();
   });
 
-  requestAnimationFrame(draw);
+  // Debounced resize.
+  var resizeTimer = null;
+  window.addEventListener("resize", function () {
+    if (resizeTimer) clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(size, 180);
+  });
+
+  size();
+  start();
 })();

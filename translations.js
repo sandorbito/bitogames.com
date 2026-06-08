@@ -1,146 +1,188 @@
-// EN / HU translations for bitogames.com.
-// Default language: EN. User choice is persisted in localStorage.
+// BITO Games — NOVA Universe
+// i18n dictionary. EN is the source of truth; other locales fall back to EN.
+// Add a language by adding a top-level key (e.g. "hu") whose value maps the
+// same data-i18n keys to translated strings. Keys ending in ".html" are
+// injected as innerHTML; all others as text. Default language: EN.
+// A user's choice is persisted in localStorage by script.js (window.setLanguage).
+// Languages: en (English) · hu (Magyar) · zh (中文)
 
 const TRANSLATIONS = {
   en: {
-    "page.title": "BITO GAMES — Independent software & games studio",
-    "page.desc": "Independent software and game development studio. Native applications and games for desktop (Linux, macOS) and mobile (iOS, iPadOS, Android). Currently in development: Project Nova — a cyberpunk city builder.",
-
-    "nav.projects": "Projects",
-    "nav.about": "About",
+    "page.title": "BITO Games — NOVA Universe · native city-building & economic sims",
+    "page.desc": "BITO Games is a solo indie studio on the Côte d'Azur building the NOVA Universe — two near-future strategy games in development: Cyber City 2089, a cyberpunk city builder, and Megacorp 2100, a sci-fi economic simulation. Native for Linux and macOS, built in Godot.",
+    "nav.universe": "Universe",
+    "nav.games": "Games",
+    "nav.studio": "Studio",
     "nav.contact": "Contact",
-
-    "hero.title": "CROSS-PLATFORM",
-    "hero.subtitle": "native software & games",
-    "hero.tagline.html": "Independent software and game development. <strong>Native</strong> applications and games for <strong>desktop and mobile</strong> platforms.",
-    "hero.status": "STATUS: PROJECT NOVA — PROTOTYPE PHASE",
-
-    "signup.title": "// JOIN THE SIGNAL",
-    "signup.desc": "Get notified when the first game drops. No spam, just launch news.",
+    "hero.presents": "BITO Games presents",
+    "hero.title": "NOVA UNIVERSE",
+    "hero.subtitle": "Two worlds. One studio.",
+    "hero.tagline.html": "A shared near-future continuity, split across two genres — and <strong>two games built as equals</strong>. A city to keep alive. A corporation to make unstoppable. Both <strong>native</strong>, both in development.",
+    "hero.status": "STATUS: TWO TITLES IN DEVELOPMENT",
+    "hero.cta": "Enter the universe ↓",
+    "universe.title": "// THE NOVA UNIVERSE",
+    "universe.intro": "One timeline. Two games that never compete for the spotlight.",
+    "universe.p1.html": "NOVA isn't a single game — it's the <strong>continuity</strong> that ties BITO's titles together. Same century, same slow collapse of the line between city and corporation, viewed from two ends of the telescope.",
+    "universe.p2.html": "In <strong>Cyber City 2089</strong> you govern from the street up: districts, citizens, infrastructure, the welfare slider that decides who the future is for. In <strong>Megacorp 2100</strong> you build from the boardroom down: supply chains, markets, and the quiet art of owning everything. Different verbs, one world.",
+    "games.title": "// IN DEVELOPMENT",
+    "games.intro": "Two titles, equal billing. Pick the seat you want — the mayor's office or the corner office.",
+    "games.cybercity.badge": "IN DEVELOPMENT",
+    "games.cybercity.title": "CYBER CITY 2089",
+    "games.cybercity.subtitle": "Cyberpunk City Builder",
+    "games.cybercity.desc": "Govern a sprawling neon city where every district has a price and every citizen has a breaking point. Balance infrastructure, unrest, and the welfare slider that quietly decides who the future belongs to. A city builder with a conscience and a body count.",
+    "games.cybercity.tag1": "City Builder",
+    "games.cybercity.tag2": "Cyberpunk",
+    "games.cybercity.tag3": "Simulation",
+    "games.cybercity.tag4": "Single-player",
+    "games.cybercity.meta.engine": "Engine: Godot 4",
+    "games.cybercity.meta.status": "Status: In development",
+    "games.cybercity.meta.platforms": "Platforms: Linux · macOS (native)",
+    "games.megacorp.badge": "IN DEVELOPMENT",
+    "games.megacorp.title": "MEGACORP 2100",
+    "games.megacorp.subtitle": "Sci-Fi Economic Simulation",
+    "games.megacorp.desc": "A spiritual successor to Capitalism 2, set a decade further into the NOVA timeline. Engineer supply chains, corner markets, manufacture demand, and grow one company until it's bigger than the government that's supposed to regulate it. Deep economic strategy with teeth.",
+    "games.megacorp.tag1": "Economic Sim",
+    "games.megacorp.tag2": "Sci-Fi",
+    "games.megacorp.tag3": "Strategy",
+    "games.megacorp.tag4": "Single-player",
+    "games.megacorp.meta.engine": "Engine: Godot 4",
+    "games.megacorp.meta.status": "Status: In development",
+    "games.megacorp.meta.platforms": "Platforms: Linux · macOS (native)",
+    "studio.title": "// THE STUDIO",
+    "studio.p1.html": "BITO Games is a <strong>family business</strong> on the Côte d'Azur. I'm Sándor Bitó, the founder. I spent the first chapter of my life as a <strong>ballet dancer</strong> — years of turning relentless discipline into something that looks effortless. I build games the same way.",
+    "studio.p2.html": "It's family because it's meant to outlast me. I pair a lifelong obsession with city-builders and economic sims with modern tools to build at a scale one person never could before — and the studio is a legacy I want to hand down: to my son, and one day to his children. The NOVA Universe is the first thing we leave behind.",
+    "studio.ai.html": "AI-native, human-led. <strong>Every system is designed by hand, every line reviewed.</strong> The vision is human — the AI just keeps up.",
+    "studio.p3.html": "And it's <strong>built native</strong>. Core engine is <a href=\"https://godotengine.org\" target=\"_blank\" rel=\"noopener\">Godot 4</a>, compiled for the platforms I actually use — <strong>Linux and macOS</strong> as first-class citizens, not afterthoughts. No web wrappers. No lowest-common-denominator ports. Headed for <a href=\"https://store.steampowered.com\" target=\"_blank\" rel=\"noopener\">Steam</a>, <a href=\"https://itch.io\" target=\"_blank\" rel=\"noopener\">itch.io</a>, and right here.",
+    "studio.quote": "Cross-platform — but always native.",
+    "studio.quote.attribution": "— the only rule the studio doesn't break",
+    "signup.title": "// GET THE LAUNCH SIGNAL",
+    "signup.desc": "One list, both worlds. I'll write when Cyber City 2089 or Megacorp 2100 hits a playable milestone, opens a beta, or launches. No spam, no filler — just the signal.",
     "signup.email.placeholder": "your@email.com",
-    "signup.button": "NOTIFY ME →",
-    "signup.note.html": "Or write to <a href=\"mailto:info@bitogames.com\">info@bitogames.com</a>",
-
-    "dev.title": "// IN DEVELOPMENT",
-    "dev.main.badge": "MAIN PROJECT",
-    "dev.main.subtitle": "Working title · Cyberpunk City Builder",
-    "dev.main.desc": "A cyberpunk city builder. Manage districts, citizens, infrastructure, and the welfare slider. Developed natively for Linux and macOS.",
-    "dev.tag.builder": "City Builder",
-    "dev.meta.engine": "Engine: Godot 4",
-    "dev.meta.status": "Status: Prototype phase",
-    "dev.meta.platforms": "Platforms: Linux, macOS",
-    "dev.side.badge": "ACTIVE SIDE PROJECTS",
-    "dev.side.intro": "Smaller-scale, standalone applications and experimental games. Published on isolated subpages as they ship.",
-    "dev.side.swiftui.desc": "Native applications and games for the Apple ecosystem — macOS, iOS, iPadOS.",
-    "dev.side.python.desc": "Developer tools, data analysis scripts, and desktop utilities.",
-
-    "about.title": "// ABOUT",
-    "about.p1.html": "BITO GAMES is an <strong>independent</strong> indie studio based on the <strong>Côte d'Azur</strong>. We build software and games <strong>natively</strong> for the platforms we love — Linux, macOS, iOS, iPadOS, Android.",
-    "about.p2.html": "Core engine: <a href=\"https://godotengine.org\" target=\"_blank\" rel=\"noopener\">Godot 4</a>, with native <strong>Swift / SwiftUI</strong> for the Apple ecosystem and <strong>Python</strong> for tooling. Distributed on <a href=\"https://store.steampowered.com\" target=\"_blank\" rel=\"noopener\">Steam</a>, <a href=\"https://itch.io\" target=\"_blank\" rel=\"noopener\">Itch.io</a>, the App Store, and right here.",
-    "about.quote": "Cross-platform — but always native.",
-
-    "footer.copy": "© 2026 BITO GAMES · Côte d'Azur · Built native",
+    "signup.button": "SEND THE SIGNAL →",
+    "signup.note.html": "Or reach me directly at <a href=\"mailto:info@bitogames.com\">info@bitogames.com</a>",
+    "footer.tagline": "BITO Games · NOVA Universe",
+    "footer.copy": "© 2026 BITO Games · Côte d'Azur · Built native"
   },
 
   hu: {
-    "page.title": "BITO GAMES — Független szoftver- és játékfejlesztő stúdió",
-    "page.desc": "Független szoftver- és játékfejlesztő stúdió. Natív alkalmazások és játékok asztali (Linux, macOS) és mobil (iOS, iPadOS, Android) platformokra. Jelenlegi projekt: Project Nova — cyberpunk városépítő stratégia.",
-
-    "nav.projects": "Projektek",
-    "nav.about": "Rólunk",
+    "page.title": "BITO Games — NOVA Universe · natív városépítő és gazdasági szimulátorok",
+    "page.desc": "A BITO Games egyszemélyes indie stúdió a Côte d'Azur partján, a NOVA Universe alkotója — két közeljövőben játszódó stratégiai játék fejlesztés alatt: Cyber City 2089, egy cyberpunk városépítő, és Megacorp 2100, egy sci-fi gazdasági szimuláció. Natív Linuxra és macOS-re, Godotban készül.",
+    "nav.universe": "Univerzum",
+    "nav.games": "Játékok",
+    "nav.studio": "Stúdió",
     "nav.contact": "Kapcsolat",
-
-    "hero.title": "CROSS-PLATFORM",
-    "hero.subtitle": "natív szoftver és játékok",
-    "hero.tagline.html": "Független szoftver- és játékfejlesztés. <strong>Natív</strong> alkalmazások és játékok <strong>asztali és mobil</strong> platformokra.",
-    "hero.status": "ÁLLAPOT: PROJECT NOVA — PROTOTÍPUS FÁZIS",
-
-    "signup.title": "// IRATKOZZ FEL",
-    "signup.desc": "Szólunk, amint megjelenik az első játék. Nincs spam, csak fontos hírek.",
+    "hero.presents": "A BITO Games bemutatja",
+    "hero.title": "NOVA UNIVERSE",
+    "hero.subtitle": "Két világ. Egy stúdió.",
+    "hero.tagline.html": "Közös, közeljövőben játszódó történetszál, két műfajra hasítva — és <strong>két egyenrangúként megépített játék</strong>. Egy város, amit életben kell tartani. Egy vállalat, amit megállíthatatlanná kell tenni. Mindkettő <strong>natív</strong>, mindkettő fejlesztés alatt.",
+    "hero.status": "STÁTUSZ: KÉT CÍM FEJLESZTÉS ALATT",
+    "hero.cta": "Lépj be az univerzumba ↓",
+    "universe.title": "// A NOVA UNIVERSE",
+    "universe.intro": "Egy idővonal. Két játék, amik sosem versengenek a reflektorfényért.",
+    "universe.p1.html": "A NOVA nem egyetlen játék — ez a <strong>történetszál</strong>, ami összeköti a BITO címeit. Ugyanaz az évszázad, ugyanaz a lassú összemosódás város és vállalat határán, csak a távcső két végéről nézve.",
+    "universe.p2.html": "A <strong>Cyber City 2089</strong>-ben az utca szintjéről kormányzol: kerületek, lakók, infrastruktúra, és a jóléti csúszka, ami eldönti, kié lesz a jövő. A <strong>Megacorp 2100</strong>-ban a tárgyalóból építkezel lefelé: ellátási láncok, piacok, és a halk művészet, ahogy lassan mindent a kezedbe veszel. Más szabályok, ugyanaz a világ.",
+    "games.title": "// FEJLESZTÉS ALATT",
+    "games.intro": "Két cím, egyenrangú szerepben. Válaszd ki a széket, ami kell — a polgármesteri iroda vagy a sarokiroda.",
+    "games.cybercity.badge": "FEJLESZTÉS ALATT",
+    "games.cybercity.title": "CYBER CITY 2089",
+    "games.cybercity.subtitle": "Cyberpunk városépítő",
+    "games.cybercity.desc": "Kormányozz egy szétterülő neonvárost, ahol minden kerületnek ára van, és minden lakónak van egy töréspontja. Egyensúlyozz az infrastruktúra, a feszültség és a jóléti csúszka között, ami csendben eldönti, kié lesz a jövő. Városépítő lelkiismerettel — és veszteségekkel.",
+    "games.cybercity.tag1": "Városépítő",
+    "games.cybercity.tag2": "Cyberpunk",
+    "games.cybercity.tag3": "Szimuláció",
+    "games.cybercity.tag4": "Egyjátékos",
+    "games.cybercity.meta.engine": "Motor: Godot 4",
+    "games.cybercity.meta.status": "Státusz: Fejlesztés alatt",
+    "games.cybercity.meta.platforms": "Platformok: Linux · macOS (natív)",
+    "games.megacorp.badge": "FEJLESZTÉS ALATT",
+    "games.megacorp.title": "MEGACORP 2100",
+    "games.megacorp.subtitle": "Sci-fi gazdasági szimuláció",
+    "games.megacorp.desc": "A Capitalism 2 szellemi örököse, egy évtizeddel előrébb a NOVA idővonalán. Építs ellátási láncokat, kebelezd be a piacokat, gyárts keresletet, és növessz egyetlen céget addig, amíg nagyobb nem lesz a kormánynál, amelynek szabályoznia kellene. Mély gazdasági stratégia, igazi téttel.",
+    "games.megacorp.tag1": "Gazdasági szim",
+    "games.megacorp.tag2": "Sci-fi",
+    "games.megacorp.tag3": "Stratégia",
+    "games.megacorp.tag4": "Egyjátékos",
+    "games.megacorp.meta.engine": "Motor: Godot 4",
+    "games.megacorp.meta.status": "Státusz: Fejlesztés alatt",
+    "games.megacorp.meta.platforms": "Platformok: Linux · macOS (natív)",
+    "studio.title": "// A STÚDIÓ",
+    "studio.p1.html": "A BITO Games <strong>családi vállalkozás</strong> a francia Riviéra partján. Bitó Sándor vagyok, az alapító. Életem első fejezetét <strong>balettművészként</strong> töltöttem — éveken át formáltam a kíméletlen fegyelmet olyasmivé, ami könnyednek látszik. A játékokat ugyanígy építem.",
+    "studio.p2.html": "Azért családi, mert túl akar élni engem. Egy egész életen át tartó szenvedélyt a városépítők és gazdasági szimulátorok iránt párosítok a mai eszközökkel, hogy olyan léptékben építsek, amilyenre egy ember korábban sosem volt képes — és a stúdiót örökségnek szánom: a fiamnak, egy nap pedig az ő gyerekeinek. A NOVA Universe az első, amit magunk után hagyunk.",
+    "studio.ai.html": "AI-natív, ember vezette. <strong>Minden rendszert kézzel tervezünk, minden sort átnézünk.</strong> A vízió emberi — az AI épp csak lépést tart vele.",
+    "studio.p3.html": "És <strong>natívnak épül</strong>. A magmotor a <a href=\"https://godotengine.org\" target=\"_blank\" rel=\"noopener\">Godot 4</a>, lefordítva azokra a platformokra, amiket tényleg használok — <strong>Linux és macOS</strong> elsőrangú polgárként, nem utógondolatként. Semmi webes burok. Semmi legkisebb-közös-nevezős port. Irány a <a href=\"https://store.steampowered.com\" target=\"_blank\" rel=\"noopener\">Steam</a>, az <a href=\"https://itch.io\" target=\"_blank\" rel=\"noopener\">itch.io</a> — és itt, helyben.",
+    "studio.quote": "Cross-platform — de mindig natív.",
+    "studio.quote.attribution": "— az egyetlen szabály, amit a stúdió nem szeg meg",
+    "signup.title": "// FOGD A RAJTJELET",
+    "signup.desc": "Egy lista, mindkét világ. Akkor írok, ha a Cyber City 2089 vagy a Megacorp 2100 elér egy játszható mérföldkövet, bétát nyit, vagy megjelenik. Semmi spam, semmi töltelék — csak a lényeg.",
     "signup.email.placeholder": "te@email.com",
-    "signup.button": "ÉRTESÍTS →",
-    "signup.note.html": "Vagy írj ide: <a href=\"mailto:info@bitogames.com\">info@bitogames.com</a>",
-
-    "dev.title": "// FEJLESZTÉS ALATT",
-    "dev.main.badge": "FŐ PROJEKT",
-    "dev.main.subtitle": "Munkacím · Cyberpunk városépítő stratégia",
-    "dev.main.desc": "Cyberpunk városépítő stratégia. Kerületek, lakosok, infrastruktúra és a jóléti slider menedzselése. Fejlesztés alatt natív Linux és macOS rendszerekre.",
-    "dev.tag.builder": "Városépítő",
-    "dev.meta.engine": "Motor: Godot 4",
-    "dev.meta.status": "Állapot: Prototípus fázis",
-    "dev.meta.platforms": "Platformok: Linux, macOS",
-    "dev.side.badge": "AKTÍV MELLÉKPROJEKTEK",
-    "dev.side.intro": "Kisebb léptékű, önálló alkalmazások és kísérleti játékok. Izolált aloldalakon kerülnek publikálásra.",
-    "dev.side.swiftui.desc": "Natív alkalmazások és játékok az Apple ökoszisztémára — macOS, iOS, iPadOS.",
-    "dev.side.python.desc": "Fejlesztői eszközök, adatelemző szkriptek és asztali segédprogramok.",
-
-    "about.title": "// RÓLUNK",
-    "about.p1.html": "A BITO GAMES egy <strong>független</strong> indie stúdió a <strong>Francia Riviérán</strong>. Szoftvereket és játékokat fejlesztünk <strong>natívan</strong> azokra a platformokra, amiket szeretünk — Linux, macOS, iOS, iPadOS, Android.",
-    "about.p2.html": "Fő motor: <a href=\"https://godotengine.org\" target=\"_blank\" rel=\"noopener\">Godot 4</a>, natív <strong>Swift / SwiftUI</strong> az Apple ökoszisztémára és <strong>Python</strong> az eszközökhöz. Disztribúció: <a href=\"https://store.steampowered.com\" target=\"_blank\" rel=\"noopener\">Steam</a>, <a href=\"https://itch.io\" target=\"_blank\" rel=\"noopener\">Itch.io</a>, App Store, és itt.",
-    "about.quote": "Cross-platform — de mindig natív.",
-
-    "footer.copy": "© 2026 BITO GAMES · Francia Riviéra · Natív fejlesztés",
+    "signup.button": "KÜLDD A JELET →",
+    "signup.note.html": "Vagy írj közvetlenül: <a href=\"mailto:info@bitogames.com\">info@bitogames.com</a>",
+    "footer.tagline": "BITO Games · NOVA Universe",
+    "footer.copy": "© 2026 BITO Games · Côte d'Azur · Natívan építve"
   },
+
+  zh: {
+    "page.title": "BITO Games — NOVA Universe · 原生城市建造与经济模拟游戏",
+    "page.desc": "BITO Games 是一家位于法国蔚蓝海岸的独立单人工作室，正在打造 NOVA Universe——两款开发中的近未来策略游戏：赛博朋克城市建造游戏 Cyber City 2089，以及科幻经济模拟游戏 Megacorp 2100。基于 Godot 引擎，为 Linux 与 macOS 原生打造。",
+    "nav.universe": "宇宙",
+    "nav.games": "游戏",
+    "nav.studio": "工作室",
+    "nav.contact": "联系",
+    "hero.presents": "BITO Games 呈现",
+    "hero.title": "NOVA UNIVERSE",
+    "hero.subtitle": "两个世界。一家工作室。",
+    "hero.tagline.html": "共享同一段近未来世界线，分属两种类型——而且是<strong>两款平起平坐的游戏</strong>。一座需要维系的城市。一家需要做到无可撼动的企业。两者皆为<strong>原生</strong>，皆在开发中。",
+    "hero.status": "状态：两款作品开发中",
+    "hero.cta": "进入宇宙 ↓",
+    "universe.title": "// NOVA UNIVERSE 世界",
+    "universe.intro": "同一条时间线。两款游戏，从不争抢聚光灯。",
+    "universe.p1.html": "NOVA 不是单独一款游戏——它是将 BITO 旗下作品串联起来的<strong>世界观脉络</strong>。同一个世纪，同一场城市与企业之间界限的缓慢崩塌，只是从望远镜的两端分别观察。",
+    "universe.p2.html": "在 <strong>Cyber City 2089</strong> 中，你自街头向上治理：区域、市民、基础设施，以及那个悄然决定未来属于谁的福利滑块。在 <strong>Megacorp 2100</strong> 中，你自董事会向下构建：供应链、市场，以及将一切收入囊中的无声艺术。不同的玩法动词，同一个世界。",
+    "games.title": "// 开发中",
+    "games.intro": "两款作品，同等地位。选择你想坐的位置——市长办公室，还是总裁办公室。",
+    "games.cybercity.badge": "开发中",
+    "games.cybercity.title": "CYBER CITY 2089",
+    "games.cybercity.subtitle": "赛博朋克城市建造",
+    "games.cybercity.desc": "治理一座蔓延的霓虹都市，这里的每一个区域都有代价，每一位市民都有崩溃的临界点。在基础设施、动荡与那个悄然决定未来归属的福利滑块之间寻找平衡。一款有良知、也有伤亡的城市建造游戏。",
+    "games.cybercity.tag1": "城市建造",
+    "games.cybercity.tag2": "赛博朋克",
+    "games.cybercity.tag3": "模拟",
+    "games.cybercity.tag4": "单人",
+    "games.cybercity.meta.engine": "引擎：Godot 4",
+    "games.cybercity.meta.status": "状态：开发中",
+    "games.cybercity.meta.platforms": "平台：Linux · macOS（原生）",
+    "games.megacorp.badge": "开发中",
+    "games.megacorp.title": "MEGACORP 2100",
+    "games.megacorp.subtitle": "科幻经济模拟",
+    "games.megacorp.desc": "《Capitalism 2》的精神续作，故事置于 NOVA 时间线再往后十年。设计供应链、垄断市场、制造需求，把一家公司不断壮大，直到它比本该监管它的政府还要庞大。一款锋芒毕露的硬核经济策略游戏。",
+    "games.megacorp.tag1": "经济模拟",
+    "games.megacorp.tag2": "科幻",
+    "games.megacorp.tag3": "策略",
+    "games.megacorp.tag4": "单人",
+    "games.megacorp.meta.engine": "引擎：Godot 4",
+    "games.megacorp.meta.status": "状态：开发中",
+    "games.megacorp.meta.platforms": "平台：Linux · macOS（原生）",
+    "studio.title": "// 工作室",
+    "studio.p1.html": "BITO Games 是一家位于法国蔚蓝海岸的<strong>家族工作室</strong>。我是创始人 Sándor Bitó。我人生的第一个篇章是一名<strong>芭蕾舞者</strong>——用多年不懈的自律，去成就那看似毫不费力的呈现。我做游戏的方式也是如此。",
+    "studio.p2.html": "之所以称之为家族，是因为它注定要比我活得更久。我把一生对城市建造与经济模拟游戏的痴迷，与当代工具结合起来，以一个人过去无法企及的规模去构建——而这家工作室，是我想要传承下去的事业：传给我的儿子，有朝一日再传给他的孩子。NOVA Universe 是我们留给后人的第一份作品。",
+    "studio.ai.html": "AI 原生，人来主导。<strong>每一套系统都由人亲手设计，每一行都经过人工审阅。</strong>愿景属于人——AI 只是负责跟上节奏。",
+    "studio.p3.html": "而且它<strong>生来就是原生的</strong>。核心引擎是 <a href=\"https://godotengine.org\" target=\"_blank\" rel=\"noopener\">Godot 4</a>，专为我真正在用的平台编译——<strong>Linux 与 macOS</strong> 都是头等公民，而非事后补丁。没有网页套壳，也没有迁就最低标准的移植版。目标是登陆 <a href=\"https://store.steampowered.com\" target=\"_blank\" rel=\"noopener\">Steam</a>、<a href=\"https://itch.io\" target=\"_blank\" rel=\"noopener\">itch.io</a>，以及这个网站本身。",
+    "studio.quote": "跨平台——但始终原生。",
+    "studio.quote.attribution": "——这家工作室唯一不会打破的规矩",
+    "signup.title": "// 接收发布信号",
+    "signup.desc": "一份订阅，两个世界。当 Cyber City 2089 或 Megacorp 2100 达成可游玩里程碑、开启 Beta 测试或正式发售时，我会写信告诉你。没有垃圾邮件，没有废话——只有信号本身。",
+    "signup.email.placeholder": "your@email.com",
+    "signup.button": "发送信号 →",
+    "signup.note.html": "或直接通过 <a href=\"mailto:info@bitogames.com\">info@bitogames.com</a> 联系我",
+    "footer.tagline": "BITO Games · NOVA Universe",
+    "footer.copy": "© 2026 BITO Games · 法国蔚蓝海岸 · 原生打造"
+  }
 };
 
-(function () {
-  const STORAGE_KEY = "bitogames-lang";
-  const DEFAULT_LANG = "en";
-
-  function apply(lang) {
-    const dict = TRANSLATIONS[lang] || TRANSLATIONS[DEFAULT_LANG];
-
-    document.documentElement.lang = lang;
-
-    document.querySelectorAll("[data-i18n]").forEach((el) => {
-      const key = el.getAttribute("data-i18n");
-      if (dict[key] != null) el.textContent = dict[key];
-    });
-
-    document.querySelectorAll("[data-i18n-html]").forEach((el) => {
-      const key = el.getAttribute("data-i18n-html");
-      if (dict[key] != null) el.innerHTML = dict[key];
-    });
-
-    document.querySelectorAll("[data-i18n-attr]").forEach((el) => {
-      const pairs = el.getAttribute("data-i18n-attr").split(",");
-      pairs.forEach((pair) => {
-        const [attr, key] = pair.split(":").map((s) => s.trim());
-        if (attr && key && dict[key] != null) el.setAttribute(attr, dict[key]);
-      });
-    });
-
-    if (dict["page.title"]) document.title = dict["page.title"];
-
-    document.querySelectorAll(".lang-btn").forEach((b) => {
-      b.classList.toggle("is-active", b.getAttribute("data-lang") === lang);
-    });
-  }
-
-  function bind() {
-    document.querySelectorAll(".lang-btn").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const lang = btn.getAttribute("data-lang");
-        try {
-          localStorage.setItem(STORAGE_KEY, lang);
-        } catch (e) { /* private mode */ }
-        apply(lang);
-      });
-    });
-  }
-
-  function init() {
-    let lang = DEFAULT_LANG;
-    try {
-      lang = localStorage.getItem(STORAGE_KEY) || DEFAULT_LANG;
-    } catch (e) { /* private mode */ }
-    bind();
-    apply(lang);
-  }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init);
-  } else {
-    init();
-  }
-})();
+// Expose for both module and classic <script> usage.
+if (typeof window !== "undefined") {
+  window.TRANSLATIONS = TRANSLATIONS;
+}
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = TRANSLATIONS;
+}
