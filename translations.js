@@ -1,15 +1,11 @@
 // BITO Games — NOVA Universe
-// i18n dictionary. EN is the source of truth; other locales fall back to EN.
-// Add a language by adding a top-level key (e.g. "hu") whose value maps the
-// same data-i18n keys to translated strings. Keys ending in ".html" are
-// injected as innerHTML; all others as text. Default language: EN.
-// A user's choice is persisted in localStorage by script.js (window.setLanguage).
+// i18n dictionary v3 (2026-06-28) — Aphrodité + Thémisz
 // Languages: en (English) · hu (Magyar) · zh (中文)
 
 const TRANSLATIONS = {
   en: {
-    "page.title": "BITO Games — NOVA Universe · native city-building & economic sims",
-    "page.desc": "BITO Games is a solo indie studio on the Côte d'Azur building the NOVA Universe — two near-future strategy games in development: Cyber City 2089, a cyberpunk city builder, and Megacorp 2100, a sci-fi economic simulation. Native for Linux and macOS, built in Godot.",
+    "page.title": "BITO Games — NOVA Universe · Linux-native strategy games",
+    "page.desc": "BITO Games is an AI-native indie studio on the Côte d'Azur, building the NOVA Universe with a staff of six AI agents. Two strategy games in development: Cyber City 2089 and Megacorp 2100. Built with Raylib and C++ on Debian 13 — native first, Linux first.",
     "nav.universe": "Universe",
     "nav.games": "Games",
     "nav.studio": "Studio",
@@ -17,8 +13,8 @@ const TRANSLATIONS = {
     "hero.presents": "BITO Games presents",
     "hero.title": "NOVA UNIVERSE",
     "hero.subtitle": "Two worlds. One studio.",
-    "hero.tagline.html": "A shared near-future continuity, split across two genres — and <strong>two games built as equals</strong>. A city to keep alive. A corporation to make unstoppable. Both <strong>native</strong>, both in development.",
-    "hero.status": "STATUS: TWO TITLES IN DEVELOPMENT",
+    "hero.tagline.html": "A shared near-future continuity, split across two genres — and <strong>two games built as equals</strong>. A city to keep alive. A corporation to make unstoppable. Built with a staff of six AI agents — both <strong>native</strong>, both in development.",
+    "hero.status": "STATUS: TWO TITLES IN DEVELOPMENT — LINUX NATIVE",
     "hero.cta": "Enter the universe ↓",
     "universe.title": "// THE NOVA UNIVERSE",
     "universe.intro": "One timeline. Two games that never compete for the spotlight.",
@@ -34,9 +30,9 @@ const TRANSLATIONS = {
     "games.cybercity.tag2": "Cyberpunk",
     "games.cybercity.tag3": "Simulation",
     "games.cybercity.tag4": "Single-player",
-    "games.cybercity.meta.engine": "Engine: Godot 4",
+    "games.cybercity.meta.engine": "Engine: C++, Raylib — Linux native",
     "games.cybercity.meta.status": "Status: In development",
-    "games.cybercity.meta.platforms": "Platforms: Linux · macOS (native)",
+    "games.cybercity.meta.platforms": "Platforms: Linux (primary) · macOS · Windows",
     "games.megacorp.badge": "IN DEVELOPMENT",
     "games.megacorp.title": "MEGACORP 2100",
     "games.megacorp.subtitle": "Sci-Fi Economic Simulation",
@@ -45,14 +41,14 @@ const TRANSLATIONS = {
     "games.megacorp.tag2": "Sci-Fi",
     "games.megacorp.tag3": "Strategy",
     "games.megacorp.tag4": "Single-player",
-    "games.megacorp.meta.engine": "Engine: Godot 4",
+    "games.megacorp.meta.engine": "Engine: C++, Raylib — Linux native",
     "games.megacorp.meta.status": "Status: In development",
-    "games.megacorp.meta.platforms": "Platforms: Linux · macOS (native)",
+    "games.megacorp.meta.platforms": "Platforms: Linux (primary) · macOS · Windows",
     "studio.title": "// THE STUDIO",
     "studio.p1.html": "BITO Games is a <strong>family business</strong> on the Côte d'Azur. I'm Sándor Bitó, the founder. I spent the first chapter of my life as a <strong>ballet dancer</strong> — years of turning relentless discipline into something that looks effortless. I build games the same way.",
     "studio.p2.html": "It's family because it's meant to outlast me. I pair a lifelong obsession with city-builders and economic sims with modern tools to build at a scale one person never could before — and the studio is a legacy I want to hand down: to my son, and one day to his children. The NOVA Universe is the first thing we leave behind.",
-    "studio.ai.html": "AI-native, human-led. <strong>Every system is designed by hand, every line reviewed.</strong> The vision is human — the AI just keeps up.",
-    "studio.p3.html": "And it's <strong>built native</strong>. Core engine is <a href=\"https://godotengine.org\" target=\"_blank\" rel=\"noopener\">Godot 4</a>, compiled for the platforms I actually use — <strong>Linux and macOS</strong> as first-class citizens, not afterthoughts. No web wrappers. No lowest-common-denominator ports. Headed for <a href=\"https://store.steampowered.com\" target=\"_blank\" rel=\"noopener\">Steam</a>, <a href=\"https://itch.io\" target=\"_blank\" rel=\"noopener\">itch.io</a>, and right here.",
+    "studio.ai.html": "AI-native, human-led. The studio runs on a staff of <strong>six AI agents</strong> — Thémisz (chronicler), Athéné (spec writer), Héphaisztosz (builder), Apollón (auditor), Aphrodité (the studio's voice), and Hermész (messenger). Every system is designed by hand, every line reviewed. <strong>We build tools for ourselves, not products for customers.</strong> The vision is human — the AI keeps up.",
+    "studio.p3.html": "And it's <strong>built native</strong>. Graphics via <a href=\"https://www.raylib.com\" target=\"_blank\" rel=\"noopener\">Raylib</a> — inspired by the 80s constraint philosophy (if it can't be expressed in simple primitives, it's not ready yet). Tooling and automation in <strong>Python</strong>. Dev machine: <strong>Debian 13</strong>. <strong>Linux first</strong> — primary target OS. Headed for <a href=\"https://store.steampowered.com\" target=\"_blank\" rel=\"noopener\">Steam</a>, <a href=\"https://itch.io\" target=\"_blank\" rel=\"noopener\">itch.io</a>, and right here.",
     "studio.quote": "Cross-platform — but always native.",
     "studio.quote.attribution": "— the only rule the studio doesn't break",
     "signup.title": "// GET THE LAUNCH SIGNAL",
@@ -61,12 +57,12 @@ const TRANSLATIONS = {
     "signup.button": "SEND THE SIGNAL →",
     "signup.note.html": "Or reach me directly at <a href=\"mailto:info@bitogames.com\">info@bitogames.com</a>",
     "footer.tagline": "BITO Games · NOVA Universe",
-    "footer.copy": "© 2026 BITO Games · Côte d'Azur · Built native"
+    "footer.copy": "© 2026 BITO Games · Côte d'Azur · Built in C++ and Raylib · Native on Linux"
   },
 
   hu: {
-    "page.title": "BITO Games — NOVA Universe · natív városépítő és gazdasági szimulátorok",
-    "page.desc": "A BITO Games egyszemélyes indie stúdió a Côte d'Azur partján, a NOVA Universe alkotója — két közeljövőben játszódó stratégiai játék fejlesztés alatt: Cyber City 2089, egy cyberpunk városépítő, és Megacorp 2100, egy sci-fi gazdasági szimuláció. Natív Linuxra és macOS-re, Godotban készül.",
+    "page.title": "BITO Games — NOVA Universe · Linux-natív stratégiai játékok",
+    "page.desc": "A BITO Games AI-natív indie stúdió a Côte d'Azur partján, a NOVA Universe építője hat AI-ügynökből álló stábbal. Két stratégiai játék fejlesztés alatt: Cyber City 2089 és Megacorp 2100. Raylib és C++, Debian 13 alatt — natívan, Linuxra elsőként.",
     "nav.universe": "Univerzum",
     "nav.games": "Játékok",
     "nav.studio": "Stúdió",
@@ -74,8 +70,8 @@ const TRANSLATIONS = {
     "hero.presents": "A BITO Games bemutatja",
     "hero.title": "NOVA UNIVERSE",
     "hero.subtitle": "Két világ. Egy stúdió.",
-    "hero.tagline.html": "Közös, közeljövőben játszódó történetszál, két műfajra hasítva — és <strong>két egyenrangúként megépített játék</strong>. Egy város, amit életben kell tartani. Egy vállalat, amit megállíthatatlanná kell tenni. Mindkettő <strong>natív</strong>, mindkettő fejlesztés alatt.",
-    "hero.status": "STÁTUSZ: KÉT CÍM FEJLESZTÉS ALATT",
+    "hero.tagline.html": "Közös, közeljövőben játszódó történetszál, két műfajra hasítva — és <strong>két egyenrangúként megépített játék</strong>. Egy város, amit életben kell tartani. Egy vállalat, amit megállíthatatlanná kell tenni. Hat AI-ügynökből álló stábbal építve — mindkettő <strong>natív</strong>, mindkettő fejlesztés alatt.",
+    "hero.status": "STÁTUSZ: KÉT CÍM FEJLESZTÉS ALATT — LINUX NATÍV",
     "hero.cta": "Lépj be az univerzumba ↓",
     "universe.title": "// A NOVA UNIVERSE",
     "universe.intro": "Egy idővonal. Két játék, amik sosem versengenek a reflektorfényért.",
@@ -91,9 +87,9 @@ const TRANSLATIONS = {
     "games.cybercity.tag2": "Cyberpunk",
     "games.cybercity.tag3": "Szimuláció",
     "games.cybercity.tag4": "Egyjátékos",
-    "games.cybercity.meta.engine": "Motor: Godot 4",
+    "games.cybercity.meta.engine": "Motor: C++, Raylib — Linux natív",
     "games.cybercity.meta.status": "Státusz: Fejlesztés alatt",
-    "games.cybercity.meta.platforms": "Platformok: Linux · macOS (natív)",
+    "games.cybercity.meta.platforms": "Platformok: Linux (elsődleges) · macOS · Windows",
     "games.megacorp.badge": "FEJLESZTÉS ALATT",
     "games.megacorp.title": "MEGACORP 2100",
     "games.megacorp.subtitle": "Sci-fi gazdasági szimuláció",
@@ -102,14 +98,14 @@ const TRANSLATIONS = {
     "games.megacorp.tag2": "Sci-fi",
     "games.megacorp.tag3": "Stratégia",
     "games.megacorp.tag4": "Egyjátékos",
-    "games.megacorp.meta.engine": "Motor: Godot 4",
+    "games.megacorp.meta.engine": "Motor: C++, Raylib — Linux natív",
     "games.megacorp.meta.status": "Státusz: Fejlesztés alatt",
-    "games.megacorp.meta.platforms": "Platformok: Linux · macOS (natív)",
+    "games.megacorp.meta.platforms": "Platformok: Linux (elsődleges) · macOS · Windows",
     "studio.title": "// A STÚDIÓ",
     "studio.p1.html": "A BITO Games <strong>családi vállalkozás</strong> a francia Riviéra partján. Bitó Sándor vagyok, az alapító. Életem első fejezetét <strong>balettművészként</strong> töltöttem — éveken át formáltam a kíméletlen fegyelmet olyasmivé, ami könnyednek látszik. A játékokat ugyanígy építem.",
     "studio.p2.html": "Azért családi, mert túl akar élni engem. Egy egész életen át tartó szenvedélyt a városépítők és gazdasági szimulátorok iránt párosítok a mai eszközökkel, hogy olyan léptékben építsek, amilyenre egy ember korábban sosem volt képes — és a stúdiót örökségnek szánom: a fiamnak, egy nap pedig az ő gyerekeinek. A NOVA Universe az első, amit magunk után hagyunk.",
-    "studio.ai.html": "AI-natív, ember vezette. <strong>Minden rendszert kézzel tervezünk, minden sort átnézünk.</strong> A vízió emberi — az AI épp csak lépést tart vele.",
-    "studio.p3.html": "És <strong>natívnak épül</strong>. A magmotor a <a href=\"https://godotengine.org\" target=\"_blank\" rel=\"noopener\">Godot 4</a>, lefordítva azokra a platformokra, amiket tényleg használok — <strong>Linux és macOS</strong> elsőrangú polgárként, nem utógondolatként. Semmi webes burok. Semmi legkisebb-közös-nevezős port. Irány a <a href=\"https://store.steampowered.com\" target=\"_blank\" rel=\"noopener\">Steam</a>, az <a href=\"https://itch.io\" target=\"_blank\" rel=\"noopener\">itch.io</a> — és itt, helyben.",
+    "studio.ai.html": "AI-natív, ember vezette. A stúdió <strong>hat AI-ügynökből</strong> áll — Thémisz (krónikás), Athéné (specifikációk), Héphaisztosz (építő), Apollón (auditor), Aphrodité (a stúdió hangja), és Hermész (hírnök). Minden rendszert kézzel tervezünk, minden sort átnézünk. <strong>Magunknak építünk eszközöket, nem a piacnak termékeket.</strong> A vízió emberi — az AI tartja a lépést.",
+    "studio.p3.html": "És <strong>natívnak épül</strong>. Grafika <a href=\"https://www.raylib.com\" target=\"_blank\" rel=\"noopener\">Raylib</a>-bel — a 80-as évek korlát-filozófiája ihlette (ha nem fejezhető ki egyszerű primitívekkel, még nem érett meg). Eszközök és automatizáció <strong>Pythonban</strong>. Fejlesztői gép: <strong>Debian 13</strong>. <strong>Linux első</strong> — elsődleges célplatform. Irány a <a href=\"https://store.steampowered.com\" target=\"_blank\" rel=\"noopener\">Steam</a>, az <a href=\"https://itch.io\" target=\"_blank\" rel=\"noopener\">itch.io</a> — és itt, helyben.",
     "studio.quote": "Cross-platform — de mindig natív.",
     "studio.quote.attribution": "— az egyetlen szabály, amit a stúdió nem szeg meg",
     "signup.title": "// FOGD A RAJTJELET",
@@ -118,12 +114,12 @@ const TRANSLATIONS = {
     "signup.button": "KÜLDD A JELET →",
     "signup.note.html": "Vagy írj közvetlenül: <a href=\"mailto:info@bitogames.com\">info@bitogames.com</a>",
     "footer.tagline": "BITO Games · NOVA Universe",
-    "footer.copy": "© 2026 BITO Games · Côte d'Azur · Natívan építve"
+    "footer.copy": "© 2026 BITO Games · Côte d'Azur · C++ és Raylib · Natív Linuxon"
   },
 
   zh: {
-    "page.title": "BITO Games — NOVA Universe · 原生城市建造与经济模拟游戏",
-    "page.desc": "BITO Games 是一家位于法国蔚蓝海岸的独立单人工作室，正在打造 NOVA Universe——两款开发中的近未来策略游戏：赛博朋克城市建造游戏 Cyber City 2089，以及科幻经济模拟游戏 Megacorp 2100。基于 Godot 引擎，为 Linux 与 macOS 原生打造。",
+    "page.title": "BITO Games — NOVA Universe · Linux 原生策略游戏",
+    "page.desc": "BITO Games 是一家位于法国蔚蓝海岸的 AI 原生独立工作室，由六名 AI 智能体组成团队，共同打造 NOVA Universe。两款策略游戏正在开发中：Cyber City 2089 与 Megacorp 2100。基于 Raylib 与 C++，运行于 Debian 13——原生优先，Linux 优先。",
     "nav.universe": "宇宙",
     "nav.games": "游戏",
     "nav.studio": "工作室",
@@ -131,8 +127,8 @@ const TRANSLATIONS = {
     "hero.presents": "BITO Games 呈现",
     "hero.title": "NOVA UNIVERSE",
     "hero.subtitle": "两个世界。一家工作室。",
-    "hero.tagline.html": "共享同一段近未来世界线，分属两种类型——而且是<strong>两款平起平坐的游戏</strong>。一座需要维系的城市。一家需要做到无可撼动的企业。两者皆为<strong>原生</strong>，皆在开发中。",
-    "hero.status": "状态：两款作品开发中",
+    "hero.tagline.html": "共享同一段近未来世界线，分属两种类型——而且是<strong>两款平起平坐的游戏</strong>。一座需要维系的城市。一家需要做到无可撼动的企业。由六名 AI 智能体团队开发——两者皆为<strong>原生</strong>，皆在开发中。",
+    "hero.status": "状态：两款作品开发中 — Linux 原生",
     "hero.cta": "进入宇宙 ↓",
     "universe.title": "// NOVA UNIVERSE 世界",
     "universe.intro": "同一条时间线。两款游戏，从不争抢聚光灯。",
@@ -148,9 +144,9 @@ const TRANSLATIONS = {
     "games.cybercity.tag2": "赛博朋克",
     "games.cybercity.tag3": "模拟",
     "games.cybercity.tag4": "单人",
-    "games.cybercity.meta.engine": "引擎：Godot 4",
+    "games.cybercity.meta.engine": "引擎：C++, Raylib — Linux 原生",
     "games.cybercity.meta.status": "状态：开发中",
-    "games.cybercity.meta.platforms": "平台：Linux · macOS（原生）",
+    "games.cybercity.meta.platforms": "平台：Linux (首选) · macOS · Windows",
     "games.megacorp.badge": "开发中",
     "games.megacorp.title": "MEGACORP 2100",
     "games.megacorp.subtitle": "科幻经济模拟",
@@ -159,14 +155,14 @@ const TRANSLATIONS = {
     "games.megacorp.tag2": "科幻",
     "games.megacorp.tag3": "策略",
     "games.megacorp.tag4": "单人",
-    "games.megacorp.meta.engine": "引擎：Godot 4",
+    "games.megacorp.meta.engine": "引擎：C++, Raylib — Linux 原生",
     "games.megacorp.meta.status": "状态：开发中",
-    "games.megacorp.meta.platforms": "平台：Linux · macOS（原生）",
+    "games.megacorp.meta.platforms": "平台：Linux (首选) · macOS · Windows",
     "studio.title": "// 工作室",
     "studio.p1.html": "BITO Games 是一家位于法国蔚蓝海岸的<strong>家族工作室</strong>。我是创始人 Sándor Bitó。我人生的第一个篇章是一名<strong>芭蕾舞者</strong>——用多年不懈的自律，去成就那看似毫不费力的呈现。我做游戏的方式也是如此。",
     "studio.p2.html": "之所以称之为家族，是因为它注定要比我活得更久。我把一生对城市建造与经济模拟游戏的痴迷，与当代工具结合起来，以一个人过去无法企及的规模去构建——而这家工作室，是我想要传承下去的事业：传给我的儿子，有朝一日再传给他的孩子。NOVA Universe 是我们留给后人的第一份作品。",
-    "studio.ai.html": "AI 原生，人来主导。<strong>每一套系统都由人亲手设计，每一行都经过人工审阅。</strong>愿景属于人——AI 只是负责跟上节奏。",
-    "studio.p3.html": "而且它<strong>生来就是原生的</strong>。核心引擎是 <a href=\"https://godotengine.org\" target=\"_blank\" rel=\"noopener\">Godot 4</a>，专为我真正在用的平台编译——<strong>Linux 与 macOS</strong> 都是头等公民，而非事后补丁。没有网页套壳，也没有迁就最低标准的移植版。目标是登陆 <a href=\"https://store.steampowered.com\" target=\"_blank\" rel=\"noopener\">Steam</a>、<a href=\"https://itch.io\" target=\"_blank\" rel=\"noopener\">itch.io</a>，以及这个网站本身。",
+    "studio.ai.html": "AI 原生，人来主导。工作室由<strong>六名 AI 智能体</strong>组成——Thémisz（编年史者）、Athéné（规格撰写者）、Héphaisztosz（构建者）、Apollón（审计者）、Aphrodité（工作室的声音）、以及 Hermész（传信者）。每一套系统都由人亲手设计，每一行都经过人工审阅。<strong>我们为自己打造工具，不为市场生产产品。</strong>愿景属于人——AI 负责跟上节奏。",
+    "studio.p3.html": "而且它<strong>生来就是原生的</strong>。图形渲染基于 <a href=\"https://www.raylib.com\" target=\"_blank\" rel=\"noopener\">Raylib</a>——受 80 年代限制性哲学启发（如果无法用简单图元表达，说明还没准备好）。工具与自动化使用 <strong>Python</strong>。开发机：<strong>Debian 13</strong>。<strong>Linux 优先</strong>——首要目标平台。目标是登陆 <a href=\"https://store.steampowered.com\" target=\"_blank\" rel=\"noopener\">Steam</a>、<a href=\"https://itch.io\" target=\"_blank\" rel=\"noopener\">itch.io</a>，以及这个网站本身。",
     "studio.quote": "跨平台——但始终原生。",
     "studio.quote.attribution": "——这家工作室唯一不会打破的规矩",
     "signup.title": "// 接收发布信号",
@@ -175,7 +171,7 @@ const TRANSLATIONS = {
     "signup.button": "发送信号 →",
     "signup.note.html": "或直接通过 <a href=\"mailto:info@bitogames.com\">info@bitogames.com</a> 联系我",
     "footer.tagline": "BITO Games · NOVA Universe",
-    "footer.copy": "© 2026 BITO Games · 法国蔚蓝海岸 · 原生打造"
+    "footer.copy": "© 2026 BITO Games · 法国蔚蓝海岸 · C++ 与 Raylib · Linux 原生"
   }
 };
 
