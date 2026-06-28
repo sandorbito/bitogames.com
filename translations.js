@@ -54,7 +54,7 @@ const TRANSLATIONS = {
     "signup.title": "// GET THE LAUNCH SIGNAL",
     "signup.desc": "One list, both worlds. I'll write when Cyber City 2089 or Megacorp 2100 hits a playable milestone, opens a beta, or launches. No spam, no filler — just the signal.",
     "signup.email.placeholder": "your@email.com",
-    "signup.button": "SEND THE SIGNAL →",
+    "signup.button": "SUBSCRIBE →",
     "signup.note.html": "Or reach me directly at <a href=\"mailto:info@bitogames.com\">info@bitogames.com</a>",
     "footer.tagline": "BITO Games · NOVA Universe",
     "footer.copy": "© 2026 BITO Games · Côte d'Azur · Built with Godot 3.6 · Native on Linux"
@@ -108,10 +108,10 @@ const TRANSLATIONS = {
     "studio.p3.html": "És <strong>natívnak épül</strong>. Motor: <strong>Godot 3.6</strong> — bevált, stabil eszközlánc (ha nem fejezhető ki egyszerű primitívekkel, még nem érett meg). Eszközök és automatizáció <strong>Pythonban</strong>. Fejlesztői gép: <strong>Debian 13</strong>. <strong>Linux első</strong> — elsődleges célplatform. Irány a <a href=\"https://store.steampowered.com\" target=\"_blank\" rel=\"noopener\">Steam</a>, az <a href=\"https://itch.io\" target=\"_blank\" rel=\"noopener\">itch.io</a> — és itt, helyben.",
     "studio.quote": "Cross-platform — de mindig natív.",
     "studio.quote.attribution": "— az egyetlen szabály, amit a stúdió nem szeg meg",
-    "signup.title": "// FOGD A RAJTJELET",
+    "signup.title": "// IRATKOZZ FEL A HÍRLEVÉLRE",
     "signup.desc": "Egy lista, mindkét világ. Akkor írok, ha a Cyber City 2089 vagy a Megacorp 2100 elér egy játszható mérföldkövet, bétát nyit, vagy megjelenik. Semmi spam, semmi töltelék — csak a lényeg.",
     "signup.email.placeholder": "te@email.com",
-    "signup.button": "KÜLDD A JELET →",
+    "signup.button": "IRATKOZZ FEL →",
     "signup.note.html": "Vagy írj közvetlenül: <a href=\"mailto:info@bitogames.com\">info@bitogames.com</a>",
     "footer.tagline": "BITO Games · NOVA Universe",
     "footer.copy": "© 2026 BITO Games · Côte d'Azur · Godot 3.6 · Natív Linuxon"
