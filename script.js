@@ -266,9 +266,33 @@
       }
 
       emailInput.classList.remove("is-invalid");
-      // No backend wired yet — acknowledge locally.
-      setMsg("> Signal locked. You're on the list — watch your inbox.", "is-ok");
-      form.reset();
+      setMsg("> Transmitting signal\u2026", "");
+      var submitBtn = form.querySelector("button[type=submit]");
+      if (submitBtn) submitBtn.disabled = true;
+
+      fetch("https://formsubmit.co/ajax/info@bitogames.com", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({
+          email: val,
+          _subject: "New subscriber \u2014 bitogames.com",
+          _template: "table",
+          _captcha: "false"
+        })
+      })
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          if (data && String(data.success) === "true") {
+            setMsg("> Signal locked. You're on the list \u2014 watch your inbox.", "is-ok");
+            form.reset();
+          } else {
+            setMsg("> Transmission failed. Retry in a moment.", "is-err");
+          }
+        })
+        .catch(function () {
+          setMsg("> Transmission failed. Retry in a moment.", "is-err");
+        })
+        .finally(function () { if (submitBtn) submitBtn.disabled = false; });
     });
 
     emailInput.addEventListener("input", function () {
