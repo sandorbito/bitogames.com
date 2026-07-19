@@ -1,267 +1,1481 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="color-scheme" content="dark">
-  <meta name="theme-color" content="#07080c">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BITO GAMES — Independent software &amp; games studio</title>
+  <meta name="description" content="Independent software and game development studio. Native applications and games for desktop platforms — two universes: NOVA simulations and Pixel Art worlds." data-i18n-attr="content:page.desc" />
+  <meta name="theme-color" content="#070510" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
 
-  <title data-i18n="page.title">BITO Games — NOVA Universe · native city-building &amp; economic sims</title>
-  <meta name="description" data-i18n="page.desc" data-i18n-attr="content:page.desc" content="BITO Games is a solo indie studio on the Côte d'Azur building the NOVA Universe — two near-future strategy games in development: Cyber City 2089, a cyberpunk city builder, and Megacorp 2100, a sci-fi economic simulation. Native for Linux and macOS, built in Godot.">
+  <style>
+  /* ==================================================================
+     BITO GAMES — single-file SPA. All CSS + JS inline. Offline-safe.
+     ================================================================== */
 
-  <!-- Open Graph / social -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="BITO Games — NOVA Universe">
-  <meta property="og:description" content="Two near-future strategy games in development: Cyber City 2089 and Megacorp 2100. Native for Linux and macOS, built in Godot.">
-  <meta property="og:locale" content="en">
-  <meta name="twitter:card" content="summary_large_image">
+  /* ---------- reset ---------- */
+  *,*::before,*::after{ box-sizing:border-box; }
+  html{ -webkit-text-size-adjust:100%; }
+  body{ margin:0; }
+  img{ max-width:100%; height:auto; display:block; }
+  button{ font:inherit; color:inherit; }
+  a{ color:inherit; }
 
-  <!-- Fonts: Space Grotesk (display/body) + Chakra Petch (tech accents) + JetBrains Mono (data) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Chakra+Petch:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  /* ---------- LANDING palette (:root scope) ---------- */
+  :root{
+    --violet-bright:#b26bff;
+    --violet-mid:#9a4dff;
+    --violet-dim:#6a2fb0;
+    --violet-dark:#2a1247;
+    --magenta:#ff4dd2;
+    --violet-glow:rgba(178,107,255,0.50);
+    --magenta-glow:rgba(255,77,210,0.45);
+    --bg:#070510;
+    --bg-soft:#0c0818;
+    --bg-panel:rgba(24,12,44,0.62);
+    --bg-panel-strong:rgba(30,16,56,0.85);
+    --border:rgba(178,107,255,0.26);
+    --border-strong:rgba(178,107,255,0.55);
+    --text:#e7dcff;
+    --text-dim:#a48fc9;
+    --warn:#ff4d6d;
+    --font-mono:'SFMono-Regular', ui-monospace, 'JetBrains Mono', 'DejaVu Sans Mono', 'Courier New', monospace;
+    --font-ui:system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --font-display:var(--font-mono);
+  }
 
-  <link rel="stylesheet" href="style.css">
+  html,body{ background:var(--bg); color:var(--text); }
+  body{
+    font-family:var(--font-mono);
+    line-height:1.6;
+    overflow-x:hidden;
+    min-height:100vh;
+  }
+
+  .sr-only{
+    position:absolute!important; width:1px; height:1px; padding:0; margin:-1px;
+    overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+  }
+
+  :focus-visible{ outline:2px solid var(--magenta); outline-offset:2px; }
+
+  /* ---------- shared background layers ---------- */
+  #matrix-canvas{
+    position:fixed; inset:0; width:100%; height:100%;
+    z-index:0; opacity:0.42; pointer-events:none;
+  }
+  .scanlines{
+    position:fixed; inset:0; z-index:1; pointer-events:none;
+    background:repeating-linear-gradient(
+      to bottom,
+      rgba(178,107,255,0.022) 0px,
+      rgba(178,107,255,0.022) 1px,
+      transparent 1px,
+      transparent 3px );
+  }
+  /* worlds paint an opaque backdrop so the purple rain reads only on landing */
+  body[data-view="nova"] #matrix-canvas,
+  body[data-view="pixel"] #matrix-canvas{ opacity:0; }
+  body[data-view="pixel"] .scanlines{ opacity:0; }
+
+  /* ================================================================
+     HEADER (shared, sticky)
+     ================================================================ */
+  .site-header{
+    position:sticky; top:0; z-index:100;
+    display:flex; justify-content:space-between; align-items:center; gap:1rem;
+    flex-wrap:wrap;
+    padding:0.9rem 1.5rem;
+    background:rgba(7,5,16,0.85);
+    backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--border);
+  }
+  body[data-view="nova"] .site-header{
+    background:rgba(5,7,13,0.88); border-bottom-color:rgba(127,149,179,0.22);
+  }
+  body[data-view="pixel"] .site-header{
+    background:#FFF7E6; border-bottom:3px solid #20143A;
+  }
+  .brand{ display:block; text-decoration:none; }
+  .brand-logo{ height:44px; width:auto; display:block; transition:filter .25s; }
+  .brand:hover .brand-logo,.brand:focus-visible .brand-logo{
+    filter:drop-shadow(0 0 8px var(--violet-glow));
+  }
+  body[data-view="pixel"] .brand-logo{ filter:drop-shadow(2px 2px 0 rgba(32,20,58,0.35)); }
+
+  .header-right{
+    display:flex; align-items:center; gap:1.2rem; flex-wrap:wrap;
+  }
+  .nav-scroll{ display:flex; align-items:center; gap:1.1rem; }
+  .nav-scroll a, .nav-home{
+    font-family:var(--font-mono); font-size:0.85rem; letter-spacing:0.05em;
+    text-decoration:none; color:var(--text-dim); background:none; border:none;
+    cursor:pointer; padding:0.3rem 0.1rem; transition:color .2s;
+  }
+  .nav-scroll a:hover, .nav-home:hover{ color:var(--violet-bright); }
+  body[data-view="pixel"] .nav-scroll a,
+  body[data-view="pixel"] .nav-home{ color:#4B3A6B; }
+  body[data-view="pixel"] .nav-scroll a:hover,
+  body[data-view="pixel"] .nav-home:hover{ color:#0E7E7E; }
+  body[data-view="nova"] .nav-home:hover{ color:#6fe9ff; }
+
+  /* home button only on world views; scroll-nav only on landing */
+  .nav-home{ display:none; }
+  body[data-view="nova"] .nav-home,
+  body[data-view="pixel"] .nav-home{ display:inline-block; }
+  body[data-view="nova"] .nav-scroll,
+  body[data-view="pixel"] .nav-scroll{ display:none; }
+
+  .lang-switch{ display:inline-flex; align-items:center; gap:0.35rem; }
+  .lang-sep{ color:var(--text-dim); opacity:0.5; }
+  .lang-btn{
+    font-family:var(--font-mono); font-size:0.8rem; letter-spacing:0.12em;
+    background:none; border:none; color:var(--text-dim); cursor:pointer;
+    padding:0.3rem 0.4rem; border-radius:4px; transition:color .2s, text-shadow .2s;
+  }
+  .lang-btn:hover{ color:var(--text); }
+  .lang-btn.is-active{ color:var(--violet-bright); text-shadow:0 0 8px var(--violet-glow); }
+  body[data-view="nova"] .lang-btn.is-active{ color:#6fe9ff; text-shadow:0 0 8px rgba(110,233,255,0.5); }
+  body[data-view="pixel"] .lang-btn{ color:#4B3A6B; }
+  body[data-view="pixel"] .lang-btn.is-active{ color:#0E7E7E; text-shadow:none; font-weight:700; }
+
+  @media (max-width:560px){
+    .site-header{ justify-content:center; }
+    .header-right{ width:100%; justify-content:space-between; }
+  }
+
+  /* ================================================================
+     VIEW ROUTER
+     ================================================================ */
+  main{ position:relative; z-index:2; }
+  .view{ display:none; }
+  .view.is-active{ display:block; }
+  .view--enter{ animation:viewEnter .32s ease-out; }
+  @keyframes viewEnter{
+    from{ opacity:0; transform:translateY(12px); }
+    to{ opacity:1; transform:none; }
+  }
+
+  /* ================================================================
+     LANDING — hero
+     ================================================================ */
+  .landing-hero{
+    min-height:calc(100vh - 72px);
+    display:flex; flex-direction:column; justify-content:center;
+    padding:3rem 1.5rem; max-width:1100px; margin:0 auto;
+  }
+  .hero-logo{
+    width:min(460px,72vw); height:auto; display:block; margin:0 0 1.5rem;
+    filter:drop-shadow(0 0 24px rgba(178,107,255,0.35));
+  }
+  .terminal-prefix{
+    font-family:var(--font-mono); color:var(--violet-dim);
+    font-size:0.95rem; letter-spacing:0.06em; margin-bottom:0.8rem;
+  }
+  .terminal-prefix::after{
+    content:"_"; margin-left:2px; animation:blink 1.1s steps(1) infinite;
+  }
+  @keyframes blink{ 50%{ opacity:0; } }
+
+  .hero-title{ margin:0 0 1.2rem; }
+  .hero-title .glitch{
+    position:relative; display:inline-block;
+    font:900 clamp(2rem,7vw,4.5rem)/1.05 var(--font-display);
+    letter-spacing:0.02em; color:var(--violet-bright);
+    text-shadow:0 0 14px var(--violet-glow); word-break:break-word;
+  }
+  .glitch::before,.glitch::after{
+    content:attr(data-text); position:absolute; left:0; top:0;
+    width:100%; overflow:hidden; opacity:0.45; pointer-events:none;
+  }
+  .glitch::before{ color:#00e5ff; clip-path:inset(0 0 66% 0); animation:glitchTop 2.6s infinite steps(2); }
+  .glitch::after{ color:var(--magenta); clip-path:inset(66% 0 0 0); animation:glitchBot 3.1s infinite steps(2); }
+  @keyframes glitchTop{ 0%,92%,100%{transform:none} 94%{transform:translate(-3px,-1px)} 96%{transform:translate(2px,1px)} }
+  @keyframes glitchBot{ 0%,90%,100%{transform:none} 93%{transform:translate(3px,1px)} 97%{transform:translate(-2px,-1px)} }
+  .hero-title-line2{
+    display:block; color:var(--text);
+    font-size:clamp(1rem,3vw,1.6rem); font-weight:700;
+    margin-top:0.4rem; text-shadow:none; letter-spacing:0.02em;
+  }
+  .hero-tagline{
+    color:var(--text); max-width:640px; margin:0 0 1.5rem; font-size:1.02rem;
+  }
+  .hero-tagline strong{ color:var(--violet-bright); text-shadow:0 0 6px var(--violet-glow); }
+  .hero-status{
+    display:inline-flex; align-items:center; gap:0.6rem;
+    font-family:var(--font-mono); font-size:0.8rem; letter-spacing:0.08em;
+    color:var(--text-dim);
+    border:1px solid var(--border); background:var(--bg-panel);
+    padding:0.5rem 1rem; border-radius:100px; align-self:flex-start;
+  }
+  .status-dot{
+    width:9px; height:9px; border-radius:50%; background:var(--violet-bright);
+    box-shadow:0 0 8px var(--violet-bright); animation:pulse 2.2s ease-in-out infinite;
+  }
+  @keyframes pulse{ 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.45;transform:scale(0.8)} }
+
+  /* section titles (landing) */
+  .section-title{
+    font:700 clamp(1.4rem,3vw,2rem)/1.2 var(--font-display);
+    color:var(--violet-bright); letter-spacing:0.05em;
+    text-shadow:0 0 8px var(--violet-glow); margin:0 0 1.4rem;
+  }
+
+  /* ---------- landing ABOUT ---------- */
+  .about, .universes{ max-width:1100px; margin:0 auto; padding:3rem 1.5rem; }
+  .about-content{ max-width:760px; }
+  .about-content p{ margin:0 0 1.1rem; color:var(--text); }
+  .about-content a{ color:var(--violet-bright); text-decoration:underline; text-underline-offset:3px; }
+  .about-content strong{ color:var(--violet-bright); }
+  .about-philosophy{
+    border-left:3px solid var(--violet-bright);
+    background:var(--bg-panel); padding:1rem 1.3rem;
+    font-style:italic; color:var(--violet-mid); border-radius:0 8px 8px 0;
+  }
+
+  /* ---------- universe entry cards ---------- */
+  .universe-grid{ display:grid; grid-template-columns:1fr; gap:1.5rem; }
+  @media (min-width:860px){ .universe-grid{ grid-template-columns:1fr 1fr; } }
+  .universe-card{
+    position:relative; display:flex; flex-direction:column; align-items:center; gap:0.6rem;
+    padding:1.5rem; background:var(--bg-panel);
+    border:1px solid var(--border); border-radius:14px; cursor:pointer;
+    transition:transform .2s, border-color .3s, box-shadow .3s; overflow:hidden;
+    text-align:center; color:var(--text); font-family:var(--font-mono);
+  }
+  .universe-card--nova{ background:radial-gradient(120% 80% at 50% 0,rgba(30,60,120,0.35),var(--bg-panel)); }
+  .universe-card--pixel{ background:radial-gradient(120% 80% at 50% 0,rgba(20,90,90,0.30),var(--bg-panel)); }
+  .universe-banner{ width:100%; height:auto; max-width:640px; display:block; }
+  .universe-cta{
+    font-weight:700; letter-spacing:0.12em; font-size:1.05rem; color:var(--violet-bright);
+    transition:transform .2s, text-shadow .2s;
+  }
+  .universe-tagline{ font-size:0.85rem; color:var(--text-dim); letter-spacing:0.04em; }
+  .universe-card:hover, .universe-card:focus-visible{ transform:translateY(-5px); }
+  .universe-card--nova:hover, .universe-card--nova:focus-visible{
+    border-color:#6db0ff; box-shadow:0 0 34px rgba(90,150,255,0.30);
+  }
+  .universe-card--pixel:hover, .universe-card--pixel:focus-visible{
+    border-color:#3fd0c0; box-shadow:0 0 34px rgba(60,200,180,0.28);
+  }
+  .universe-card:hover .universe-cta{ transform:translateX(4px); text-shadow:0 0 10px var(--violet-glow); }
+
+  /* ================================================================
+     LANDING footer
+     ================================================================ */
+  .site-footer{
+    position:relative; z-index:2;
+    border-top:1px solid var(--border);
+    padding:2rem 1.5rem; margin-top:2rem;
+    background:rgba(7,5,16,0.6);
+  }
+  body[data-view="pixel"] .site-footer{ display:none; }
+  .footer-inner{
+    max-width:1100px; margin:0 auto; display:flex; flex-wrap:wrap;
+    gap:1rem 1.5rem; align-items:center; justify-content:space-between;
+  }
+  .footer-logo{
+    font-family:var(--font-display); font-weight:700; letter-spacing:0.1em;
+    color:var(--violet-bright); text-shadow:0 0 8px var(--violet-glow);
+  }
+  .footer-links{ display:flex; flex-wrap:wrap; gap:0.5rem; align-items:center; font-size:0.85rem; }
+  .footer-links a{ color:var(--text-dim); text-decoration:none; }
+  .footer-links a:hover{ color:var(--violet-bright); }
+  .footer-links .sep{ color:var(--text-dim); opacity:0.5; }
+  .footer-copy{ font-size:0.8rem; color:var(--text-dim); width:100%; }
+
+  /* ================================================================
+     NOVA UNIVERSE  (scoped under .view-nova)
+     ================================================================ */
+  .view-nova{
+    --nv-bg:#05070d; --nv-bg-2:#0a1120; --nv-bg-3:#0f1a2e; --nv-void:#02040a;
+    --nv-steel:#7f95b3; --nv-steel-lt:#c3d2e8; --nv-ice:#e8f0ff;
+    --nv-blue:#4ea8ff; --nv-blue-deep:#1c5fd6; --nv-cyan:#6fe9ff;
+    --nv-gold:#e9c46a; --nv-gold-lt:#ffe9a8; --nv-gold-deep:#b8862f;
+    --nv-dev:#6fe9ff; --nv-soon:var(--nv-steel);
+    --nv-line:rgba(127,149,179,0.22); --nv-line-str:rgba(110,233,255,0.45);
+    --nv-glow-blue:rgba(78,168,255,0.35); --nv-glow-gold:rgba(233,196,106,0.30);
+    --nv-panel:rgba(12,20,38,0.72); --nv-panel-str:rgba(15,26,46,0.90);
+    --nv-font-display:ui-monospace, "SFMono-Regular", "Cascadia Mono", "Segoe UI Mono", "Roboto Mono", Menlo, Consolas, monospace;
+    --nv-font-body:system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    position:relative; background:var(--nv-bg); color:var(--nv-steel-lt); min-height:100vh;
+    font-family:var(--nv-font-body);
+  }
+  #nv-stars{ position:fixed; inset:0; z-index:-2; pointer-events:none; }
+  .view-nova::before{
+    content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background:
+      radial-gradient(1200px 700px at 78% -10%, rgba(28,95,214,0.20), transparent 60%),
+      radial-gradient(900px 600px at 12% 110%, rgba(233,196,106,0.07), transparent 55%),
+      radial-gradient(1000px 1000px at 50% 40%, transparent 55%, rgba(2,4,10,0.85) 100%);
+  }
+
+  .nv-topbar{
+    display:flex; justify-content:space-between; align-items:center; gap:0.6rem;
+    padding:0.9rem clamp(1rem,4vw,2.5rem);
+    border-bottom:1px solid var(--nv-line);
+    backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+    background:rgba(5,7,13,0.6);
+  }
+  .nv-back{
+    font-family:var(--nv-font-display); font-size:0.8rem; letter-spacing:0.18em;
+    color:var(--nv-steel); text-decoration:none; text-transform:uppercase;
+    display:inline-flex; align-items:center; gap:0.4rem; background:none; border:none; cursor:pointer;
+  }
+  .nv-back span[aria-hidden]{ transition:transform .2s; }
+  .nv-back:hover{ color:var(--nv-cyan); }
+  .nv-back:hover span[aria-hidden]{ transform:translateX(-3px); }
+  .nv-sector{
+    display:inline-flex; align-items:center; gap:0.45rem;
+    font-family:var(--nv-font-display); font-size:0.7rem; letter-spacing:0.2em;
+    text-transform:uppercase; color:var(--nv-steel);
+  }
+  .nv-sector-dot{
+    width:7px; height:7px; border-radius:50%; background:var(--nv-cyan);
+    box-shadow:0 0 8px var(--nv-cyan); animation:nv-pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes nv-pulse{ 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.45;transform:scale(0.8)} }
+
+  .nv-hero{ position:relative; text-align:center; padding:clamp(2rem,6vw,4.5rem) clamp(1rem,4vw,2rem) clamp(3rem,7vw,5rem); overflow:hidden; }
+  .nv-hero-inner{ position:relative; z-index:2; }
+  .nv-eyebrow{
+    position:relative; font-family:var(--nv-font-display); font-size:0.72rem;
+    letter-spacing:0.34em; text-transform:uppercase; color:var(--nv-gold);
+    margin:0 0 1.4rem; padding-top:1rem;
+  }
+  .nv-eyebrow::before{
+    content:""; position:absolute; top:0; left:50%; transform:translateX(-50%);
+    width:48px; height:1px; background:var(--nv-gold);
+  }
+  .nv-hero-banner{
+    display:block; width:min(880px,92%); height:auto; margin:0.5rem auto 1.6rem;
+    aspect-ratio:1983/793;
+    filter:drop-shadow(0 0 40px rgba(78,168,255,0.28)) drop-shadow(0 14px 30px rgba(0,0,0,0.6));
+    animation:nv-rise .7s ease-out both, nv-float 6s ease-in-out 0.7s infinite;
+  }
+  @keyframes nv-rise{ from{opacity:0;transform:translateY(18px) scale(0.985)} to{opacity:1;transform:none} }
+  @keyframes nv-float{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+  .nv-hero-tagline{
+    font-family:var(--nv-font-body); font-size:clamp(1rem,2.2vw,1.35rem);
+    color:var(--nv-steel-lt); max-width:640px; margin:0 auto 1.4rem;
+  }
+  .nv-hero-status{
+    display:inline-flex; align-items:center; gap:0.55rem;
+    font-family:var(--nv-font-display); font-size:0.78rem; letter-spacing:0.16em;
+    color:var(--nv-cyan); border:1px solid var(--nv-line-str); background:var(--nv-panel);
+    padding:0.5rem 1.1rem; border-radius:2px;
+  }
+  .nv-status-dot{
+    width:7px; height:7px; border-radius:50%; background:var(--nv-cyan);
+    box-shadow:0 0 8px var(--nv-cyan); animation:nv-pulse 2.4s ease-in-out infinite;
+  }
+  .nv-hero-grid{
+    position:absolute; left:50%; bottom:-2px; width:180%; height:46%;
+    transform:translateX(-50%) perspective(420px) rotateX(64deg);
+    transform-origin:bottom center; pointer-events:none; opacity:0.5; z-index:1;
+    background-image:
+      linear-gradient(to right, var(--nv-line-str) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--nv-line-str) 1px, transparent 1px);
+    background-size:44px 44px;
+    -webkit-mask-image:linear-gradient(to top, #000 0%, transparent 82%);
+            mask-image:linear-gradient(to top, #000 0%, transparent 82%);
+    animation:nv-grid 6s linear infinite;
+  }
+  @keyframes nv-grid{ from{background-position:0 0} to{background-position:0 44px} }
+
+  .nv-games{ padding-bottom:clamp(2rem,6vw,4rem); }
+  .nv-section-head{ text-align:center; padding:0 clamp(1rem,4vw,2.5rem); margin-bottom:1.8rem; }
+  .nv-section-title{
+    font:600 clamp(1.5rem,3.5vw,2.4rem)/1.15 var(--nv-font-display);
+    letter-spacing:0.16em; text-transform:uppercase; color:var(--nv-ice);
+    text-shadow:0 0 18px var(--nv-glow-blue); margin:0 0 0.6rem; overflow-wrap:break-word;
+  }
+  .nv-slash{ color:var(--nv-blue); }
+  .nv-section-sub{ color:var(--nv-steel); font-family:var(--nv-font-body); max-width:560px; margin:0 auto; }
+  .nv-grid{
+    display:grid; gap:1.4rem;
+    grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr));
+    padding:0 clamp(1rem,4vw,2.5rem); max-width:1200px; margin:0 auto;
+  }
+  .nv-card{
+    position:relative; display:flex; flex-direction:column;
+    background:linear-gradient(180deg, rgba(78,168,255,0.06), transparent 40%), var(--nv-panel);
+    border:1px solid var(--nv-line); border-radius:6px;
+    padding:1.4rem 1.35rem 1.25rem; overflow:hidden;
+    transition:transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+    animation:nv-cardin .4s ease-out both; animation-delay:calc(var(--i,0)*70ms);
+  }
+  @keyframes nv-cardin{ from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:none} }
+  .nv-card::before{
+    content:""; position:absolute; left:0; top:0; bottom:0; width:2px;
+    background:linear-gradient(var(--nv-blue), var(--nv-blue-deep)); opacity:.7;
+  }
+  .nv-card.is-playable::before{ background:linear-gradient(var(--nv-gold-lt), var(--nv-gold-deep)); }
+  .nv-card:hover, .nv-card:focus-within{
+    transform:translateY(-5px); border-color:var(--nv-line-str);
+    box-shadow:0 14px 40px rgba(0,0,0,.5), 0 0 26px var(--nv-glow-blue);
+  }
+  .nv-card.is-playable:hover, .nv-card.is-playable:focus-within{
+    box-shadow:0 14px 40px rgba(0,0,0,.5), 0 0 26px var(--nv-glow-gold);
+  }
+  .nv-card-top{ display:flex; justify-content:space-between; align-items:center; gap:0.5rem; margin-bottom:.9rem; }
+  .nv-status{
+    display:inline-flex; align-items:center; gap:.45rem;
+    font:600 .7rem/1 var(--nv-font-display); letter-spacing:.14em; text-transform:uppercase;
+    color:var(--nv-cyan); border:1px solid var(--nv-line-str); border-radius:2px; padding:.32rem .6rem;
+  }
+  .nv-status.is-playable{ color:var(--nv-gold-lt); border-color:rgba(233,196,106,.45); }
+  .nv-status-led{
+    width:7px; height:7px; border-radius:50%; background:var(--nv-cyan);
+    box-shadow:0 0 8px var(--nv-cyan); animation:nv-pulse 2.4s ease-in-out infinite;
+  }
+  .nv-status.is-playable .nv-status-led{ background:var(--nv-gold); box-shadow:0 0 8px var(--nv-gold); }
+  .nv-card-id{ font:600 .68rem/1 var(--nv-font-display); letter-spacing:.16em; color:var(--nv-steel); opacity:.6; }
+  .nv-card-title{
+    font:600 clamp(1.15rem,2.2vw,1.5rem)/1.15 var(--nv-font-display);
+    letter-spacing:.06em; text-transform:uppercase; color:var(--nv-ice);
+    margin:.1rem 0 .35rem; overflow-wrap:break-word;
+  }
+  .nv-card-tagline{ color:var(--nv-blue); font:600 .9rem/1.4 var(--nv-font-body); margin:0 0 .7rem; }
+  .nv-card-desc{ color:var(--nv-steel-lt); font-size:.93rem; line-height:1.6; margin:0 0 1rem; flex:1; }
+  .nv-tags{ list-style:none; display:flex; flex-wrap:wrap; gap:.4rem; margin:0 0 1.1rem; padding:0; }
+  .nv-tag{
+    font:600 .68rem/1 var(--nv-font-display); letter-spacing:.12em; text-transform:uppercase;
+    color:var(--nv-steel); border:1px solid var(--nv-line); border-radius:2px; padding:.3rem .55rem;
+    background:rgba(127,149,179,.06);
+  }
+  .nv-dl-block{ border-top:1px solid var(--nv-line); padding-top:.85rem; }
+  .nv-dl-heading{
+    display:block; font:600 .66rem/1 var(--nv-font-display); letter-spacing:.24em;
+    color:var(--nv-steel); margin-bottom:.55rem;
+  }
+  .nv-dl-row{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.5rem; }
+  .nv-dl{
+    display:flex; flex-direction:column; align-items:center; gap:.25rem; text-align:center;
+    border:1px solid var(--nv-line); border-radius:4px; padding:.55rem .3rem; text-decoration:none;
+  }
+  .nv-dl-os{ font:600 .72rem/1 var(--nv-font-display); letter-spacing:.08em; color:var(--nv-steel-lt); }
+  .nv-dl-state{ font-size:.64rem; letter-spacing:.1em; text-transform:uppercase; color:var(--nv-steel); }
+  .nv-dl--soon{ opacity:.72; cursor:not-allowed; background:rgba(127,149,179,.04); }
+  .nv-dl--live{ cursor:pointer; }
+  .nv-dl--live:hover{ border-color:var(--nv-line-str); box-shadow:0 0 14px var(--nv-glow-blue); transform:translateY(-2px); }
+  .nv-dl--live .nv-dl-state{ color:var(--nv-cyan); }
+
+  .nv-footer{
+    display:flex; flex-wrap:wrap; gap:0.8rem; justify-content:space-between; align-items:center;
+    border-top:1px solid var(--nv-line); padding:1.4rem clamp(1rem,4vw,2.5rem);
+    background:rgba(2,4,10,.6);
+    font-family:var(--nv-font-display); font-size:0.72rem; letter-spacing:0.14em;
+    text-transform:uppercase; color:var(--nv-steel);
+  }
+
+  /* ================================================================
+     PIXEL ART UNIVERSE  (scoped under #view-pixel)
+     ================================================================ */
+  #view-pixel{
+    --px-sky-top:#43C6E8; --px-sky-bot:#8BE0D6; --px-sun:#FFF3C7;
+    --px-cream:#FFF7E6; --px-card:#FFF1D6; --px-card-2:#F6E3B8; --px-card-edge:#E9C98F;
+    --px-ink:#20143A; --px-ink-soft:#4B3A6B;
+    --px-turq:#17B6B6; --px-turq-dk:#0E7E7E; --px-turq-lt:#7FE9E4;
+    --px-gold:#F5C21B; --px-gold-dk:#C48A00; --px-gold-lt:#FFDE5C;
+    --px-coral:#F0554E; --px-coral-dk:#B8322C;
+    --px-grass:#57C22D; --px-grass-dk:#2E7D1A; --px-dirt:#7A4A24;
+    --px-disp:"Arial Black","Arial Bold",Impact,Haettenschweiler,"Franklin Gothic Heavy","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+    --px-body:ui-monospace,"SFMono-Regular",Menlo,Consolas,"Courier New","PingFang SC","Hiragino Sans GB","Microsoft YaHei",monospace;
+    color:var(--px-ink); font-family:var(--px-body);
+    background:linear-gradient(180deg,var(--px-sky-top),var(--px-sky-bot));
+    background-attachment:fixed; image-rendering:pixelated; position:relative; min-height:100dvh;
+  }
+  #view-pixel::after{
+    content:""; position:absolute; inset:0; pointer-events:none; z-index:0;
+    background-image:
+      repeating-linear-gradient(0deg,rgba(32,20,58,.05) 0 1px,transparent 1px 16px),
+      repeating-linear-gradient(90deg,rgba(32,20,58,.05) 0 1px,transparent 1px 16px);
+  }
+  #view-pixel > *{ position:relative; z-index:1; }
+  .px-wrap{ max-width:1040px; margin:0 auto; padding:0 clamp(16px,4vw,32px); }
+
+  .px-h{
+    font-family:var(--px-disp); font-weight:900; text-transform:uppercase;
+    letter-spacing:.03em; line-height:1.08; -webkit-font-smoothing:none; margin:0;
+  }
+  .px-h--ink{ color:var(--px-ink); text-shadow:3px 3px 0 var(--px-turq), 6px 6px 0 var(--px-ink); }
+  .px-h--ink.is-gold{ text-shadow:3px 3px 0 var(--px-gold), 6px 6px 0 var(--px-ink); }
+  .px-h--ink.is-coral{ text-shadow:3px 3px 0 var(--px-coral), 6px 6px 0 var(--px-ink); }
+  .px-h--pop{
+    color:var(--px-cream);
+    text-shadow:
+      2px 0 var(--px-ink),-2px 0 var(--px-ink),0 2px var(--px-ink),0 -2px var(--px-ink),
+      2px 2px var(--px-ink),-2px 2px var(--px-ink),2px -2px var(--px-ink),-2px -2px var(--px-ink),
+      4px 4px 0 var(--px-turq), 7px 7px 0 var(--px-ink);
+  }
+  .px-h--sm{ color:var(--px-ink); letter-spacing:.05em; text-shadow:2px 2px 0 var(--px-turq); }
+
+  .px-topbar{ padding:10px 0; }
+  .px-topbar__inner{
+    max-width:1040px; margin:0 auto; padding:0 clamp(16px,4vw,32px);
+    display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  }
+  .px-pill-btn{
+    font-family:var(--px-disp); font-weight:900; text-transform:uppercase; font-size:12px;
+    color:var(--px-ink); background:var(--px-gold); border:3px solid var(--px-ink);
+    box-shadow:4px 4px 0 var(--px-ink); padding:8px 14px; text-decoration:none; cursor:pointer;
+    transition:transform .08s steps(2,end),box-shadow .08s steps(2,end);
+  }
+  .px-pill-btn:hover{ transform:translate(-1px,-1px); box-shadow:5px 5px 0 var(--px-ink); }
+  .px-pill-btn:active{ transform:translate(3px,3px); box-shadow:1px 1px 0 var(--px-ink); }
+  .px-pill-btn:focus-visible{ outline:3px solid var(--px-coral); outline-offset:3px; }
+  .px-topbar .px-crumb{ font-size:clamp(0.95rem,3.4vw,1.3rem); }
+  .px-nav-links{ margin-left:auto; display:flex; gap:16px; }
+  .px-nav-links a{
+    font-family:var(--px-disp); font-weight:900; text-transform:uppercase; font-size:12px;
+    color:var(--px-ink); text-decoration:none; border-bottom:3px solid transparent;
+  }
+  .px-nav-links a:hover{ border-bottom-color:var(--px-coral); }
+  @media (max-width:560px){ .px-nav-links{ display:none; } }
+
+  .px-hero{ position:relative; overflow:hidden; text-align:center; padding:clamp(24px,5vh,52px) 0 clamp(28px,6vh,56px); }
+  .px-hero__glow{
+    position:absolute; left:50%; top:34%; transform:translate(-50%,-50%);
+    width:min(760px,92vw); height:min(360px,44vh); z-index:1; pointer-events:none;
+    background:radial-gradient(closest-side,var(--px-sun),transparent 72%); opacity:.85;
+  }
+  .px-hero__banner{
+    position:relative; z-index:2; display:block; margin:0 auto;
+    width:min(940px,94%); height:auto; image-rendering:pixelated; aspect-ratio:1983/793;
+    filter:drop-shadow(0 6px 0 rgba(32,20,58,.35)); animation:px-float 5s steps(30) infinite;
+  }
+  @keyframes px-float{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+  .px-cloud{
+    position:absolute; z-index:1; width:48px; height:24px; background:var(--px-cream);
+    box-shadow:16px 0 0 var(--px-cream),8px -8px 0 var(--px-cream),24px -8px 0 var(--px-cream);
+    opacity:.9; animation:px-drift 26s linear infinite;
+  }
+  .px-cloud.c1{ top:10%; left:-60px; }
+  .px-cloud.c2{ top:20%; left:-60px; transform:scale(.7); animation-duration:38s; animation-delay:-8s; }
+  @keyframes px-drift{ from{transform:translateX(0)} to{transform:translateX(120vw)} }
+  .px-spark{
+    position:absolute; z-index:1; width:8px; height:8px; background:var(--px-gold);
+    box-shadow:0 0 0 2px var(--px-gold-lt); animation:px-twinkle 1.8s steps(3) infinite;
+  }
+  .px-spark.s1{ top:22%; left:20%; } .px-spark.s2{ top:14%; left:66%; animation-delay:.5s; }
+  .px-spark.s3{ top:44%; left:38%; animation-delay:1s; } .px-spark.s4{ top:30%; right:18%; animation-delay:1.4s; }
+  @keyframes px-twinkle{ 0%,100%{opacity:.15;transform:scale(1)} 50%{opacity:1;transform:scale(1.4)} }
+
+  .px-sign{
+    max-width:660px; margin:clamp(18px,4vh,30px) auto 0; background:var(--px-card);
+    border:3px solid var(--px-ink); box-shadow:6px 6px 0 var(--px-ink);
+    padding:18px clamp(16px,3vw,28px); text-align:center; position:relative; z-index:3;
+  }
+  .px-sign h2{ font-size:clamp(1.05rem,3.4vw,1.8rem); margin:0 0 10px; line-height:1.2; padding-bottom:6px; }
+  .px-sign p{ margin:0; font-size:15px; line-height:1.6; color:var(--px-ink); }
+  .px-cta{
+    margin-top:clamp(18px,4vh,26px); font-family:var(--px-disp); font-weight:900;
+    text-transform:uppercase; letter-spacing:.04em; font-size:15px; color:var(--px-ink);
+    background:var(--px-gold); border:3px solid var(--px-ink); border-top-color:var(--px-gold-lt);
+    box-shadow:5px 5px 0 var(--px-ink); padding:12px 20px; min-height:48px;
+    display:inline-flex; align-items:center; gap:8px; text-decoration:none;
+    transition:transform .08s steps(2,end),box-shadow .08s steps(2,end); position:relative; z-index:3;
+  }
+  .px-cta:hover{ transform:translate(-1px,-1px); box-shadow:6px 6px 0 var(--px-ink); }
+  .px-cta:active{ transform:translate(3px,3px); box-shadow:2px 2px 0 var(--px-ink); }
+  .px-cta:focus-visible{ outline:3px solid var(--px-coral); outline-offset:3px; }
+  .px-divider{
+    height:6px; max-width:940px; margin:clamp(18px,4vh,30px) auto 0;
+    background:repeating-linear-gradient(90deg,var(--px-ink) 0 6px,transparent 6px 12px);
+  }
+
+  .px-games{ padding:clamp(24px,5vh,44px) 0 clamp(32px,6vh,56px); }
+  .px-games__head{ text-align:center; margin-bottom:clamp(20px,4vh,32px); }
+  .px-games__head h2{ font-size:clamp(1.4rem,4.5vw,2.4rem); margin-bottom:12px; }
+  .px-games__head p{ color:var(--px-ink); font-size:15px; }
+  .px-grid{ display:grid; gap:28px; grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr)); }
+  .px-card{
+    background:var(--px-card); border:3px solid var(--px-ink); box-shadow:6px 6px 0 var(--px-ink);
+    display:flex; flex-direction:column; overflow:hidden;
+    transition:transform .08s steps(2,end),box-shadow .08s steps(2,end);
+  }
+  .px-card:hover, .px-card:focus-within{ transform:translate(-4px,-4px); box-shadow:10px 10px 0 var(--px-ink); }
+  .px-card.pop{ animation:px-pop .18s steps(3) both; }
+  @keyframes px-pop{ from{opacity:0;transform:scale(.9)} to{opacity:1;transform:scale(1)} }
+
+  .px-card__cover{ position:relative; height:150px; border-bottom:3px solid var(--px-ink); overflow:hidden; image-rendering:pixelated; }
+  .px-card__title{
+    position:absolute; left:0; right:0; bottom:0; z-index:3; margin:0;
+    padding:7px 10px; text-align:center; font-size:clamp(1.05rem,3vw,1.45rem);
+    color:var(--px-cream); background:rgba(32,20,58,.85); border-top:3px solid var(--px-ink);
+    text-shadow:2px 2px 0 var(--px-ink);
+  }
+  .px-card__cover.feke{
+    background:
+      radial-gradient(circle at 82% 22%,var(--px-gold-lt) 0 5px,transparent 6px),
+      radial-gradient(circle at 20% 18%,#fff 0 1px,transparent 2px),
+      radial-gradient(circle at 44% 26%,#fff 0 1px,transparent 2px),
+      radial-gradient(circle at 66% 14%,#fff 0 1px,transparent 2px),
+      linear-gradient(180deg,#2A1C52 0 34%,#5A2E70 34% 46%,var(--px-coral-dk) 46% 54%,var(--px-grass-dk) 54% 66%,var(--px-dirt) 66% 100%);
+  }
+  .px-card__cover.feke::before{
+    content:""; position:absolute; left:50%; bottom:0; width:118px; height:56px;
+    transform:translateX(-50%); background:#3A2E57; clip-path:polygon(40% 0,60% 0,100% 100%,0 100%);
+  }
+  .px-card__cover.feke::after{
+    content:""; position:absolute; left:50%; bottom:24px; width:28px; height:28px;
+    transform:translateX(-50%); background:var(--px-dirt); border:3px solid var(--px-ink);
+    background-image:linear-gradient(45deg,transparent 43%,var(--px-ink) 43% 57%,transparent 57%),
+      linear-gradient(-45deg,transparent 43%,var(--px-ink) 43% 57%,transparent 57%);
+    box-shadow:3px 3px 0 rgba(32,20,58,.45);
+  }
+  .px-card__cover.kiko{
+    background:
+      radial-gradient(circle at 22% 24%,var(--px-gold-lt) 0 8px,transparent 9px),
+      linear-gradient(180deg,var(--px-sky-top) 0 44%,#1487B8 44% 52%,#1FA9E0 52% 100%);
+  }
+  .px-card__cover.kiko::after{
+    content:""; position:absolute; left:44%; bottom:40px; width:56px; height:50px;
+    transform:translateX(-50%); background:var(--px-ink);
+    clip-path:polygon(48% 2%,52% 2%,52% 12%,88% 46%,52% 46%,52% 54%,98% 54%,84% 80%,16% 80%,2% 54%,48% 54%,48% 12%);
+    filter:drop-shadow(2px 2px 0 rgba(32,20,58,.35));
+  }
+  .px-card__body{ padding:18px; display:flex; flex-direction:column; gap:12px; }
+  .px-tag-row{ display:flex; flex-wrap:wrap; align-items:center; gap:10px; }
+  .px-tagpill{
+    font-family:var(--px-disp); font-weight:900; text-transform:uppercase; font-size:11px;
+    color:var(--px-ink); background:var(--px-turq-lt); border:3px solid var(--px-ink); padding:3px 8px;
+  }
+  .px-status{
+    font-family:var(--px-disp); font-weight:900; text-transform:uppercase; font-size:11px;
+    letter-spacing:.03em; padding:5px 12px; border:3px solid var(--px-ink); color:var(--px-ink);
+    clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px);
+  }
+  .px-status.is-playable{ background:var(--px-coral); color:var(--px-cream); }
+  .px-status.is-dev{ background:var(--px-gold); color:var(--px-ink); }
+  .px-card__tagline{
+    margin:0; font-family:var(--px-disp); font-weight:900; text-transform:uppercase;
+    font-size:12px; letter-spacing:.03em; color:var(--px-turq-dk);
+  }
+  .px-card__desc{ margin:0; font-size:14px; line-height:1.6; color:var(--px-ink); }
+
+  .px-tray{ background:var(--px-card-2); border:3px solid var(--px-ink); padding:14px; margin-top:2px; }
+  .px-tray h4{ margin:0 0 10px; font-size:12px; }
+  .px-dl-row{ display:flex; flex-direction:column; gap:10px; }
+  .px-dl{
+    position:relative; display:flex; align-items:center; gap:10px; width:100%; min-height:44px;
+    padding:8px 12px; font-family:var(--px-body); font-weight:700; text-transform:uppercase; font-size:12px;
+    color:var(--px-ink-soft); background:var(--px-card); border:3px dashed var(--px-ink);
+    box-shadow:3px 3px 0 rgba(32,20,58,.4); cursor:not-allowed; filter:saturate(.6);
+  }
+  .px-dl__glyph{ width:18px; height:18px; flex:0 0 auto; color:var(--px-ink-soft); }
+  .px-dl__os{ flex:1; text-align:left; letter-spacing:.04em; }
+  .px-dl__tag{
+    font-family:var(--px-disp); font-weight:900; font-size:9px; letter-spacing:.08em;
+    color:var(--px-ink-soft); border:2px solid var(--px-ink-soft); padding:2px 5px;
+    clip-path:polygon(4px 0,100% 0,100% calc(100% - 4px),calc(100% - 4px) 100%,0 100%,0 4px);
+  }
+  .px-dl:focus-visible{ outline:3px solid var(--px-coral); outline-offset:3px; }
+  .px-dl::after{
+    content:attr(data-tip); position:absolute; bottom:calc(100% + 6px); left:12px;
+    background:var(--px-cream); color:var(--px-ink); border:2px solid var(--px-ink); padding:4px 8px;
+    font-family:var(--px-body); font-size:11px; text-transform:none; white-space:nowrap;
+    opacity:0; pointer-events:none; transition:opacity .1s steps(2); z-index:5;
+  }
+  .px-dl:hover::after, .px-dl:focus-visible::after{ opacity:1; }
+  .px-tray__note{ margin:10px 0 0; font-size:12px; color:var(--px-ink-soft); }
+
+  .px-footer{
+    text-align:center; padding:clamp(24px,5vh,44px) 0; margin-top:12px;
+    border-top:3px solid var(--px-ink); background:var(--px-cream);
+  }
+  .px-footer__inner{ display:flex; flex-direction:column; align-items:center; gap:14px; }
+  .px-robot{
+    width:32px; height:32px; background:var(--px-turq); border:3px solid var(--px-ink);
+    box-shadow:3px 3px 0 var(--px-ink); position:relative; animation:px-hop 3s steps(2) infinite;
+  }
+  .px-robot::before{ content:""; position:absolute; top:6px; left:5px; width:6px; height:6px; background:var(--px-ink); box-shadow:11px 0 0 var(--px-ink); }
+  @keyframes px-hop{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+
+  /* ================================================================
+     RESPONSIVE / REDUCED-MOTION
+     ================================================================ */
+  @media (prefers-reduced-motion:reduce){
+    *{ animation-duration:0.001ms!important; animation-iteration-count:1!important; }
+    .glitch::before, .glitch::after{ display:none; }
+    .terminal-prefix::after{ animation:none; }
+    .status-dot, .nv-status-dot, .nv-sector-dot, .nv-status-led{ animation:none; }
+    .view--enter{ animation:none; }
+    .nv-hero-banner{ animation:none; opacity:1; transform:none; }
+    .nv-hero-grid{ animation:none; }
+    .px-hero__banner, .px-cloud, .px-spark, .px-robot{ animation:none; }
+    .px-cta:hover, .px-pill-btn:hover, .px-card:hover, .px-card:focus-within, .px-dl:hover, .universe-card:hover{ transform:none; }
+  }
+  
+  /* --- nav univerzum-gombok + feliratkozás (Sándor kérése, 2026-07-19) --- */
+  .nav-uni{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; letter-spacing:.12em;
+    padding:.2rem .1rem; opacity:.85; transition:color .2s,opacity .2s,text-shadow .2s; }
+  .nav-uni:hover,.nav-uni:focus-visible{ opacity:1; color:var(--violet,#b26bff); text-shadow:0 0 10px rgba(178,107,255,.5); }
+  .signup{ max-width:760px; margin:0 auto; padding:3rem 1.5rem 4rem; }
+  .signup-box{ border:1px solid rgba(178,107,255,.28); background:rgba(20,10,40,.55);
+    border-radius:14px; padding:2rem 1.5rem; text-align:center; }
+  .signup-desc{ color:#c9bde3; margin:.5rem 0 1.25rem; }
+  .signup-form{ display:flex; gap:.6rem; flex-wrap:wrap; justify-content:center; }
+  .signup-form input{ flex:1 1 240px; min-width:0; padding:.8rem 1rem; border-radius:10px;
+    border:1px solid rgba(178,107,255,.35); background:rgba(0,0,0,.45); color:#EDE7FA; font:inherit; }
+  .signup-form input:focus-visible{ outline:2px solid #b26bff; outline-offset:2px; }
+  .signup-form button{ padding:.8rem 1.4rem; border-radius:10px; border:1px solid #b26bff;
+    background:linear-gradient(180deg,rgba(178,107,255,.25),rgba(178,107,255,.12)); color:#EDE7FA;
+    font:inherit; letter-spacing:.08em; cursor:pointer; transition:filter .2s; }
+  .signup-form button:hover{ filter:brightness(1.25); }
+  .signup-status{ min-height:1.2em; margin:.75rem 0 0; color:#7ef0c0; font-size:.95rem; }
+  .signup-note{ color:#9d92b8; font-size:.9rem; margin-top:.75rem; }
+  .signup-status.is-ok{ color:#7ef0c0; }
+  .signup-status.is-err{ color:#ff6b8a; }
+</style>
 </head>
-<body>
-  <!-- Ambient matrix-rain canvas: low-opacity texture, gated by reduced-motion -->
+<body data-view="landing">
   <canvas id="matrix-canvas" aria-hidden="true"></canvas>
   <div class="scanlines" aria-hidden="true"></div>
-  <div class="vignette" aria-hidden="true"></div>
 
-  <a class="skip-link" href="#games">Skip to games</a>
+  <div id="live-region" class="sr-only" aria-live="polite"></div>
 
-  <!-- ============================ NAV ============================ -->
-  <header class="nav" id="nav">
-    <div class="nav__inner">
-      <a class="nav__brand" href="#top" aria-label="BITO Games — home">
-        <span class="nav__brand-bracket">[</span><span class="nav__brand-name">BITO</span><span class="nav__brand-sub">GAMES</span><span class="nav__brand-bracket">]</span>
-      </a>
-
-      <nav class="nav__links" aria-label="Primary">
-        <a href="#universe" data-i18n="nav.universe">Universe</a>
-        <a href="#games" data-i18n="nav.games">Games</a>
-        <a href="#studio" data-i18n="nav.studio">Studio</a>
-        <a href="#contact" class="nav__cta" data-i18n="nav.contact">Contact</a>
-
-        <div class="lang-switch" role="group" aria-label="Language">
-          <button type="button" class="lang-switch__btn" data-lang="en" lang="en" aria-pressed="true">EN</button>
-          <button type="button" class="lang-switch__btn" data-lang="hu" lang="hu" aria-pressed="false">HU</button>
-          <button type="button" class="lang-switch__btn" data-lang="zh" lang="zh" aria-pressed="false">中文</button>
-        </div>
+  <header class="site-header">
+    <a class="brand" href="#landing" aria-label="BITO GAMES — home">
+      <img class="brand-logo" src="assets/branding/BITO_GAMES_logo_v1_alpha.png" alt="BITO GAMES" width="66" height="44" decoding="async" />
+    </a>
+    <div class="header-right">
+      <nav class="nav-scroll" aria-label="Sections">
+        <button class="nav-uni" type="button" data-goto="nova" data-i18n="nav.nova">NOVA</button>
+        <button class="nav-uni" type="button" data-goto="pixel" data-i18n="nav.pixel">PIXEL</button>
+        <a href="#about" data-i18n="nav.about">About</a>
       </nav>
-
-      <button class="nav__toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
+      <button class="nav-home" type="button" data-goto="landing" data-i18n="nav.home">← Studio</button>
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button class="lang-btn" data-lang="en" type="button" aria-pressed="false">EN</button>
+        <span class="lang-sep" aria-hidden="true">|</span>
+        <button class="lang-btn" data-lang="hu" type="button" aria-pressed="false">HU</button>
+        <span class="lang-sep" aria-hidden="true">|</span>
+        <button class="lang-btn" data-lang="zh" type="button" aria-pressed="false">中文</button>
+      </div>
     </div>
   </header>
 
-  <main id="top">
-
-    <!-- ============================ HERO ============================ -->
-    <section class="hero" id="hero">
-      <div class="hero__frame" aria-hidden="true">
-        <span class="bracket bracket--tl"></span>
-        <span class="bracket bracket--tr"></span>
-        <span class="bracket bracket--bl"></span>
-        <span class="bracket bracket--br"></span>
+  <main>
+    <!-- ============================ LANDING ============================ -->
+    <section id="view-landing" class="view is-active" data-view="landing" aria-labelledby="landing-h1">
+      <div class="landing-hero">
+        <img class="hero-logo" src="assets/branding/BITO_GAMES_logo_v1_alpha.png" alt="BITO GAMES" />
+        <div class="terminal-prefix">~/bitogames $</div>
+        <h1 class="hero-title" id="landing-h1" tabindex="-1">
+          <span class="glitch" data-text="CROSS-PLATFORM" data-i18n="hero.title">CROSS-PLATFORM</span>
+          <span class="hero-title-line2" data-i18n="hero.subtitle">native software &amp; games</span>
+        </h1>
+        <p class="hero-tagline" data-i18n-html="hero.tagline.html">
+          Independent software and game development. <strong>Native</strong> applications and games for <strong>desktop</strong> platforms.
+        </p>
+        <p class="hero-status">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span data-i18n="hero.status">STATUS: TWO UNIVERSES IN DEVELOPMENT</span>
+        </p>
       </div>
 
-      <div class="hero__inner">
-        <p class="hero__presents reveal" data-i18n="hero.presents">BITO Games presents</p>
-
-        <h1 class="hero__title reveal" data-glitch="NOVA UNIVERSE" data-i18n="hero.title">NOVA UNIVERSE</h1>
-
-        <p class="hero__subtitle reveal" data-i18n="hero.subtitle">Two worlds. One studio.</p>
-
-        <p class="hero__tagline reveal" data-i18n="hero.tagline.html">A shared near-future continuity, split across two genres — and <strong>two games built as equals</strong>. A city to keep alive. A corporation to make unstoppable. Both <strong>native</strong>, both in development.</p>
-
-        <div class="hero__status reveal" role="status">
-          <span class="hero__status-dot" aria-hidden="true"></span>
-          <span class="hero__status-text" id="hero-status" data-i18n="hero.status" data-typewriter>STATUS: TWO TITLES IN DEVELOPMENT — LINUX NATIVE</span>
+      <section class="about" id="about">
+        <h2 class="section-title" data-i18n="about.title">// ABOUT</h2>
+        <div class="about-content">
+          <p data-i18n-html="about.p1.html">
+            BITO GAMES is an <strong>independent</strong> indie studio based on the <strong>Côte d'Azur</strong>. We build software and games <strong>natively</strong> for the platforms we love — Linux, macOS and Windows.
+          </p>
+          <p data-i18n-html="about.p2.html">
+            Game engine: <a href="https://godotengine.org" target="_blank" rel="noopener">Godot</a> — for every game. Desktop applications: <strong>GTK4 + libadwaita</strong> with <strong>Python</strong>. Distributed on <a href="https://store.steampowered.com" target="_blank" rel="noopener">Steam</a>, <a href="https://itch.io" target="_blank" rel="noopener">Itch.io</a>, and right here.
+          </p>
+          <p class="about-philosophy" data-i18n="about.quote">Cross-platform — but always native.</p>
         </div>
+      </section>
 
-        <a href="#universe" class="hero__cta reveal" data-i18n="hero.cta">Enter the universe ↓</a>
-      </div>
-    </section>
-
-    <!-- ============================ UNIVERSE ============================ -->
-    <section class="universe section" id="universe">
-      <div class="section__inner universe__inner">
-        <div class="universe__copy">
-          <h2 class="section__title reveal" data-i18n="universe.title">// THE NOVA UNIVERSE</h2>
-          <p class="section__intro reveal" data-i18n="universe.intro">One timeline. Two games that never compete for the spotlight.</p>
-          <p class="prose reveal" data-i18n="universe.p1.html">NOVA isn't a single game — it's the <strong>continuity</strong> that ties BITO's titles together. Same century, same slow collapse of the line between city and corporation, viewed from two ends of the telescope.</p>
-          <p class="prose reveal" data-i18n="universe.p2.html">In <strong>Cyber City 2089</strong> you govern from the street up: districts, citizens, infrastructure, the welfare slider that decides who the future is for. In <strong>Megacorp 2100</strong> you build from the boardroom down: supply chains, markets, and the quiet art of owning everything. Different verbs, one world.</p>
+      <section class="universes" id="universes">
+        <h2 class="section-title" data-i18n="universes.title">// CHOOSE A UNIVERSE</h2>
+        <div class="universe-grid">
+          <button class="universe-card universe-card--nova" data-goto="nova" type="button" aria-label="Enter NOVA Universe">
+            <img class="universe-banner" src="assets/branding/BITO_GAMES_NOVA_UNIVERSE_banner_v1_alpha.png" alt="NOVA Universe — simulation games" loading="lazy" decoding="async" />
+            <span class="universe-cta" data-i18n="universes.nova.cta">ENTER →</span>
+            <span class="universe-tagline" data-i18n="universes.nova.tag">Premium sci-fi simulations</span>
+          </button>
+          <button class="universe-card universe-card--pixel" data-goto="pixel" type="button" aria-label="Enter Pixel Art Universe">
+            <img class="universe-banner" src="assets/branding/BITO_GAMES_PIXEL_ART_UNIVERSE_banner_v1_alpha.png" alt="Pixel Art Universe — retro pixel games" loading="lazy" decoding="async" />
+            <span class="universe-cta" data-i18n="universes.pixel.cta">ENTER →</span>
+            <span class="universe-tagline" data-i18n="universes.pixel.tag">Warm retro pixel worlds</span>
+          </button>
         </div>
+      </section>
 
-        <!-- Diegetic data panel — the NOVA timeline, parallax target -->
-        <aside class="universe__panel reveal" data-parallax="0.18" aria-hidden="true">
-          <div class="panel">
-            <div class="panel__head">
-              <span class="panel__bracket">[</span>
-              <span class="panel__title">NOVA // TIMELINE</span>
-              <span class="panel__bracket">]</span>
-            </div>
-            <ul class="panel__rows">
-              <li><span class="panel__year">2089</span><span class="panel__entry">Cyber City — street-level governance</span></li>
-              <li><span class="panel__year">2094</span><span class="panel__entry">The Consolidation Acts</span></li>
-              <li><span class="panel__year">2100</span><span class="panel__entry">Megacorp — boardroom dominion</span></li>
-              <li><span class="panel__year">21XX</span><span class="panel__entry">[ CLASSIFIED ]</span></li>
-            </ul>
-            <div class="panel__foot">
-              <span class="panel__pulse"></span>
-              <span>CONTINUITY: STABLE</span>
-            </div>
-          </div>
-        </aside>
-      </div>
-    </section>
-
-    <!-- ============================ GAMES ============================ -->
-    <section class="games section" id="games">
-      <div class="section__inner">
-        <header class="games__header">
-          <h2 class="section__title reveal" data-i18n="games.title">// IN DEVELOPMENT</h2>
-          <p class="section__intro reveal" data-i18n="games.intro">Two titles, equal billing. Pick the seat you want — the mayor's office or the corner office.</p>
-        </header>
-
-        <div class="games__grid">
-
-          <!-- ----- CYBER CITY 2089 ----- -->
-          <article class="card card--cyber reveal" tabindex="0">
-            <div class="card__keyart" aria-hidden="true">
-              <div class="card__keyart-grid"></div>
-              <div class="card__keyart-skyline"></div>
-              <span class="card__keyart-tag">// KEY ART — WIP</span>
-              <span class="bracket bracket--tl"></span>
-              <span class="bracket bracket--br"></span>
-            </div>
-
-            <div class="card__body">
-              <span class="card__badge" data-i18n="games.cybercity.badge">IN DEVELOPMENT</span>
-              <h3 class="card__title" data-i18n="games.cybercity.title">CYBER CITY 2089</h3>
-              <p class="card__subtitle" data-i18n="games.cybercity.subtitle">Cyberpunk City Builder</p>
-              <p class="card__desc" data-i18n="games.cybercity.desc">Govern a sprawling neon city where every district has a price and every citizen has a breaking point. Balance infrastructure, unrest, and the welfare slider that quietly decides who the future belongs to. A city builder with a conscience and a body count.</p>
-
-              <ul class="card__tags">
-                <li data-i18n="games.cybercity.tag1">City Builder</li>
-                <li data-i18n="games.cybercity.tag2">Cyberpunk</li>
-                <li data-i18n="games.cybercity.tag3">Simulation</li>
-                <li data-i18n="games.cybercity.tag4">Single-player</li>
-              </ul>
-
-              <dl class="card__meta">
-                <div class="card__meta-row"><span data-i18n="games.cybercity.meta.engine">Engine: Godot 4</span></div>
-                <div class="card__meta-row"><span data-i18n="games.cybercity.meta.status">Status: In development</span></div>
-                <div class="card__meta-row"><span data-i18n="games.cybercity.meta.platforms">Platforms: Linux · macOS (native)</span></div>
-              </dl>
-            </div>
-          </article>
-
-          <!-- ----- MEGACORP 2100 ----- -->
-          <article class="card card--corp reveal" tabindex="0">
-            <div class="card__keyart" aria-hidden="true">
-              <div class="card__keyart-grid"></div>
-              <div class="card__keyart-graph"></div>
-              <span class="card__keyart-tag">// KEY ART — WIP</span>
-              <span class="bracket bracket--tl"></span>
-              <span class="bracket bracket--br"></span>
-            </div>
-
-            <div class="card__body">
-              <span class="card__badge" data-i18n="games.megacorp.badge">IN DEVELOPMENT</span>
-              <h3 class="card__title" data-i18n="games.megacorp.title">MEGACORP 2100</h3>
-              <p class="card__subtitle" data-i18n="games.megacorp.subtitle">Sci-Fi Economic Simulation</p>
-              <p class="card__desc" data-i18n="games.megacorp.desc">A spiritual successor to Capitalism 2, set a decade further into the NOVA timeline. Engineer supply chains, corner markets, manufacture demand, and grow one company until it's bigger than the government that's supposed to regulate it. Deep economic strategy with teeth.</p>
-
-              <ul class="card__tags">
-                <li data-i18n="games.megacorp.tag1">Economic Sim</li>
-                <li data-i18n="games.megacorp.tag2">Sci-Fi</li>
-                <li data-i18n="games.megacorp.tag3">Strategy</li>
-                <li data-i18n="games.megacorp.tag4">Single-player</li>
-              </ul>
-
-              <dl class="card__meta">
-                <div class="card__meta-row"><span data-i18n="games.megacorp.meta.engine">Engine: Godot 4</span></div>
-                <div class="card__meta-row"><span data-i18n="games.megacorp.meta.status">Status: In development</span></div>
-                <div class="card__meta-row"><span data-i18n="games.megacorp.meta.platforms">Platforms: Linux · macOS (native)</span></div>
-              </dl>
-            </div>
-          </article>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- ============================ STUDIO ============================ -->
-    <section class="studio section" id="studio">
-      <div class="section__inner studio__inner">
-        <h2 class="section__title reveal" data-i18n="studio.title">// THE STUDIO</h2>
-
-        <div class="studio__grid">
-          <div class="studio__copy">
-            <p class="prose reveal" data-i18n="studio.p1.html">BITO Games is a <strong>family business</strong> on the Côte d'Azur. I'm Sándor Bitó, the founder. I spent the first chapter of my life as a <strong>ballet dancer</strong> — years of turning relentless discipline into something that looks effortless. I build games the same way.</p>
-            <p class="prose reveal" data-i18n="studio.p2.html">It's family because it's meant to outlast me. I pair a lifelong obsession with city-builders and economic sims with modern tools to build at a scale one person never could before — and the studio is a legacy I want to hand down: to my son, and one day to his. The NOVA Universe is the first thing we leave behind.</p>
-            <p class="prose prose--accent reveal" data-i18n="studio.ai.html">AI-native, human-led. <strong>Every system is designed by hand, every line reviewed.</strong> The vision is human — the AI just keeps up.</p>
-            <p class="prose reveal" data-i18n="studio.p3.html">And it's <strong>built native</strong>. Core engine is <a href="https://godotengine.org" target="_blank" rel="noopener">Godot 4</a>, compiled for the platforms I actually use — <strong>Linux and macOS</strong> as first-class citizens, not afterthoughts. No web wrappers. No lowest-common-denominator ports. Headed for <a href="https://store.steampowered.com" target="_blank" rel="noopener">Steam</a>, <a href="https://itch.io" target="_blank" rel="noopener">itch.io</a>, and right here.</p>
-          </div>
-
-          <figure class="studio__quote reveal">
-            <span class="bracket bracket--tl" aria-hidden="true"></span>
-            <span class="bracket bracket--br" aria-hidden="true"></span>
-            <blockquote data-i18n="studio.quote">Cross-platform — but always native.</blockquote>
-            <figcaption data-i18n="studio.quote.attribution">— the only rule the studio doesn't break</figcaption>
-          </figure>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============================ SIGNUP / CONTACT ============================ -->
-    <section class="signup section" id="contact">
-      <div class="section__inner signup__inner reveal">
-        <div class="signup__panel">
-          <span class="bracket bracket--tl" aria-hidden="true"></span>
-          <span class="bracket bracket--tr" aria-hidden="true"></span>
-          <span class="bracket bracket--bl" aria-hidden="true"></span>
-          <span class="bracket bracket--br" aria-hidden="true"></span>
-
-          <h2 class="section__title" data-i18n="signup.title">// GET THE LAUNCH SIGNAL</h2>
-          <p class="section__intro" data-i18n="signup.desc">One list, both worlds. I'll write when Cyber City 2089 or Megacorp 2100 hits a playable milestone, opens a beta, or launches. No spam, no filler — just the signal.</p>
-
-          <form class="signup__form" id="signup-form" novalidate>
-            <label class="visually-hidden" for="signup-email">Email address</label>
-            <input
-              class="signup__input"
-              id="signup-email"
-              type="email"
-              name="email"
-              autocomplete="email"
-              required
-              data-i18n-attr="placeholder:signup.email.placeholder"
-              placeholder="your@email.com">
-            <button class="signup__button" type="submit" data-i18n="signup.button">SEND THE SIGNAL →</button>
+      <section class="signup" id="signup">
+        <div class="signup-box">
+          <h2 class="section-title" data-i18n="signup.title">// JOIN THE SIGNAL</h2>
+          <p class="signup-desc" data-i18n="signup.desc">Get notified when the first game drops. No spam, just launch news.</p>
+          <form class="signup-form" id="signup-form" novalidate>
+            <input type="email" name="email" required autocomplete="email" placeholder="your@email.com" aria-label="Email" data-i18n-attr="placeholder:signup.placeholder" />
+            <button type="submit" data-i18n="signup.button">NOTIFY ME →</button>
           </form>
-          <p class="signup__msg" id="signup-msg" role="status" aria-live="polite"></p>
-
-          <p class="signup__note" data-i18n="signup.note.html">Or reach me directly at <a href="mailto:info@bitogames.com">info@bitogames.com</a></p>
+          <p class="signup-status" id="signup-status" role="status"></p>
+          <p class="signup-note" data-i18n-html="signup.note.html">Or write to <a href="mailto:info@bitogames.com">info@bitogames.com</a></p>
         </div>
-      </div>
+      </section>
     </section>
 
+    <!-- ============================ NOVA ============================ -->
+    <section id="view-nova" class="view view-nova" data-view="nova" role="region" aria-labelledby="nv-hero-h1" hidden>
+      <canvas id="nv-stars" aria-hidden="true"></canvas>
+      <div class="nv-topbar">
+        <button class="nv-back" type="button" data-goto="landing" aria-label="Back to BITO Games home">
+          <span aria-hidden="true">←</span> <span data-i18n="nav.back">BACK</span>
+        </button>
+        <span class="nv-sector">
+          <span class="nv-sector-dot" aria-hidden="true"></span>
+          <span data-i18n="nova.sector">SECTOR // NOVA UNIVERSE</span>
+        </span>
+      </div>
+      <header class="nv-hero">
+        <div class="nv-hero-grid" aria-hidden="true"></div>
+        <div class="nv-hero-inner">
+          <p class="nv-eyebrow" data-i18n="nova.eyebrow">THE SIMULATIONS DIVISION</p>
+          <img class="nv-hero-banner"
+               src="assets/branding/BITO_GAMES_NOVA_UNIVERSE_banner_v1_alpha.png"
+               alt="NOVA UNIVERSE — the BITO Games simulation universe"
+               width="1983" height="793" decoding="async" />
+          <h1 id="nv-hero-h1" class="sr-only" tabindex="-1">NOVA Universe</h1>
+          <p class="nv-hero-tagline" data-i18n="nova.tagline">Deep systems. Living worlds. Simulations you can lose yourself in.</p>
+          <div class="nv-hero-status">
+            <span class="nv-status-dot" aria-hidden="true"></span>
+            <span data-i18n="nova.status">STATUS // 3 SIMULATIONS IN DEVELOPMENT</span>
+          </div>
+        </div>
+      </header>
+      <section class="nv-games" aria-labelledby="nv-games-title">
+        <div class="nv-section-head">
+          <h2 id="nv-games-title" class="nv-section-title"><span class="nv-slash">//</span> <span data-i18n="nova.games.title">SIMULATIONS</span></h2>
+          <p class="nv-section-sub" data-i18n="nova.games.sub">Systemic sandboxes, built native. Cross-platform — always native.</p>
+        </div>
+        <div class="nv-grid game-grid" id="nv-game-grid"></div>
+      </section>
+      <footer class="nv-footer">
+        <span data-i18n="nova.footer">NOVA UNIVERSE // BITO GAMES — Côte d'Azur</span>
+        <button class="nv-back" type="button" data-goto="landing">
+          <span aria-hidden="true">←</span> <span data-i18n="nav.back">BACK</span>
+        </button>
+      </footer>
+    </section>
+
+    <!-- ============================ PIXEL ============================ -->
+    <section id="view-pixel" class="view" data-view="pixel" aria-labelledby="pixel-h1" hidden>
+      <h1 id="pixel-h1" class="sr-only" tabindex="-1">Pixel Art Universe</h1>
+      <div class="px-topbar">
+        <div class="px-topbar__inner">
+          <button class="px-pill-btn" type="button" data-goto="landing" data-i18n="px.back">◄ BITO Games</button>
+          <p class="px-h px-h--sm px-crumb" data-i18n="px.crumb">Pixel Art Universe</p>
+          <nav class="px-nav-links" aria-label="Pixel sections">
+            <a href="#pixel-games" data-i18n="px.nav.games">Games</a>
+          </nav>
+        </div>
+      </div>
+      <div class="px-hero">
+        <div class="px-hero__glow" aria-hidden="true"></div>
+        <div class="px-cloud c1" aria-hidden="true"></div>
+        <div class="px-cloud c2" aria-hidden="true"></div>
+        <div class="px-spark s1" aria-hidden="true"></div>
+        <div class="px-spark s2" aria-hidden="true"></div>
+        <div class="px-spark s3" aria-hidden="true"></div>
+        <div class="px-spark s4" aria-hidden="true"></div>
+        <img class="px-hero__banner" alt="" src="assets/branding/BITO_GAMES_PIXEL_ART_UNIVERSE_banner_v1_alpha.png" width="1983" height="793" decoding="async" />
+        <div class="px-wrap">
+          <div class="px-sign">
+            <h2 class="px-h px-h--pop" data-i18n="px.hero.sign">Small Worlds, Big Margins</h2>
+            <p data-i18n="px.hero.lede">Hand-made 2D games about trade, routes and clever little economies. Same simple pieces every run — a brand-new puzzle every time.</p>
+          </div>
+          <a class="px-cta" href="#pixel-games" data-i18n="px.hero.cta">▼ Play the Lineup</a>
+        </div>
+        <div class="px-divider" aria-hidden="true"></div>
+      </div>
+      <div class="px-wrap px-games" id="pixel-games">
+        <div class="px-games__head">
+          <h2 class="px-h px-h--ink is-gold" data-i18n="px.games.title">The Lineup</h2>
+          <p data-i18n="px.games.sub">Two trade-puzzle worlds, one pixel at a time.</p>
+        </div>
+        <div class="px-grid" role="list"></div>
+      </div>
+      <footer class="px-footer">
+        <div class="px-footer__inner">
+          <div class="px-robot" aria-hidden="true"></div>
+          <button class="px-pill-btn" type="button" data-goto="landing" data-i18n="px.back">◄ BITO Games</button>
+        </div>
+      </footer>
+    </section>
   </main>
 
-  <!-- ============================ FOOTER ============================ -->
-  <footer class="footer">
-    <div class="footer__inner">
-      <span class="footer__tagline" data-i18n="footer.tagline">BITO Games · NOVA Universe</span>
-      <span class="footer__copy" data-i18n="footer.copy">© 2026 BITO Games · Côte d'Azur · Built in C++ and Raylib · Native on Linux</span>
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-logo">[BITO/GAMES]</div>
+      <div class="footer-links">
+        <a href="https://github.com/sandorbito" target="_blank" rel="noopener">GitHub</a>
+        <span class="sep" aria-hidden="true">·</span>
+        <a href="mailto:info@bitogames.com">info@bitogames.com</a>
+        <span class="sep" aria-hidden="true">·</span>
+        <a href="https://sandorbito.com" target="_blank" rel="noopener">sandorbito.com</a>
+      </div>
+      <div class="footer-copy" data-i18n="footer.copy">© 2026 BITO GAMES · Côte d'Azur · Built native</div>
     </div>
   </footer>
 
-  <script src="translations.js"></script>
-  <script src="matrix.js" defer></script>
-  <script src="script.js" defer></script>
+  <script>
+  (function(){
+    "use strict";
+
+    /* =============================================================
+       (A) GAMES — single source of truth. Add a game = one object.
+       ============================================================= */
+    var STATUS = { DEV:'dev', PLAYABLE:'playable' };
+    var PLATFORMS = ['windows','macos','linux'];
+    var OS_LABEL = { windows:'Windows', macos:'macOS', linux:'Linux' };
+
+    var GAMES = {
+      nova: [
+        { id:'cyber-city-2089', title:'Cyber City 2089',
+          tagline:{ en:'Cyberpunk city-builder', hu:'Cyberpunk városépítő', zh:'赛博朋克城市建造' },
+          desc:{ en:'Manage districts, citizens, infrastructure & economy in a neon metropolis.',
+                 hu:'Kezeld a kerületeket, lakosokat, infrastruktúrát és a gazdaságot egy neon-metropoliszban.',
+                 zh:'在霓虹都市中管理街区、市民、基础设施与经济。' },
+          status:STATUS.DEV, tags:['City Builder','Cyberpunk'],
+          downloads:{ windows:'soon', macos:'soon', linux:'soon' } },
+        { id:'megacorp-2100', title:'Megacorp 2100',
+          tagline:{ en:'World-strategy simulation', hu:'Világstratégiai szimuláció', zh:'世界战略模拟' },
+          desc:{ en:'Countries, corporations, a live stock market, lobbying & corruption, tenders — a mirror of society.',
+                 hu:'Országok, vállalatok, élő tőzsde, lobbizás és korrupció, tenderek — a társadalom tükre.',
+                 zh:'国家、企业、实时股市、游说与腐败、招标——社会的镜像。' },
+          status:STATUS.DEV, tags:['Strategy','Economy'],
+          downloads:{ windows:'soon', macos:'soon', linux:'soon' } },
+        { id:'nova-gp', title:'Nova GP',
+          tagline:{ en:'F1 racing management', hu:'F1 versenymenedzsment', zh:'F1 赛车经营' },
+          desc:{ en:'Run a racing team: strategy, upgrades, the championship.',
+                 hu:'Vezess versenycsapatot: stratégia, fejlesztések, a bajnokság.',
+                 zh:'经营一支车队：策略、升级、冠军争夺。' },
+          status:STATUS.DEV, tags:['Management','Racing'],
+          downloads:{ windows:'soon', macos:'soon', linux:'soon' } }
+      ],
+      pixel: [
+        { id:'feketelista', title:'Feketelista', titleEn:'Blacklist', cover:'feke',
+          tagline:{ en:'Blacklist · Smuggling puzzle', hu:'Blacklist · Csempész-fejtörő', zh:'Blacklist · 走私解谜' },
+          desc:{ en:"A smuggling trade-economy puzzle: buy AND sell at every stop to build the perfect route. Same 18 goods each run, yet every run is a fresh Rubik's-cube of margins.",
+                 hu:'Csempész kereskedelmi-gazdasági fejtörő: minden megállóban VÁSÁROLNI ÉS ELADNI is kell, hogy megépítsd a tökéletes útvonalat. Minden futásban ugyanaz a 18 áru, mégis minden kör egy friss Rubik-kocka a haszonkulcsokból.',
+                 zh:'走私贸易经济解谜：在每一站都要买入并卖出，规划出最完美的路线。每局相同的 18 种货物，却是一道全新的利润魔方。' },
+          status:STATUS.PLAYABLE, tags:['Puzzle','Economy','Trade'],
+          downloads:{ windows:'soon', macos:'soon', linux:'soon' } },
+        { id:'kikoto-13', title:'Kikötő 13', titleEn:'Harbor 13', cover:'kiko',
+          tagline:{ en:'Harbor 13 · Maritime trade sim', hu:'Harbor 13 · Tengeri kereskedelmi szimuláció', zh:'Harbor 13 · 海上贸易模拟' },
+          desc:{ en:'A 13-harbor maritime trade-route economy sim: plan routes and set buy/sell prices at each port to squeeze profit out of the tide.',
+                 hu:'13 kikötős tengeri kereskedelmi-útvonal gazdasági szimuláció: tervezd meg az útvonalakat, és állítsd be a vételi/eladási árakat minden kikötőben, hogy a dagályból is hasznot préselj.',
+                 zh:'13 个港口的海上贸易路线经济模拟：规划航线，在每个港口设定买卖价格，从潮汐中榨取利润。' },
+          status:STATUS.DEV, tags:['Simulation','Trade'],
+          downloads:{ windows:'soon', macos:'soon', linux:'soon' } }
+      ]
+    };
+
+    /* =============================================================
+       (B) i18n
+       ============================================================= */
+    var STORAGE_KEY = 'bitogames-lang';
+    var DEFAULT_LANG = 'en';
+    var currentLang = DEFAULT_LANG;
+
+    var TRANSLATIONS = {
+      en: {
+        "page.title":"BITO GAMES — Independent software & games studio",
+        "page.desc":"Independent software and game development studio. Native applications and games for desktop — two universes: NOVA simulations and Pixel Art worlds.",
+        "nav.universes":"Universes", "nav.nova":"NOVA", "nav.pixel":"PIXEL", "signup.title":"// JOIN THE SIGNAL", "signup.desc":"Get notified when the first game drops. No spam, just launch news.", "signup.placeholder":"your@email.com", "signup.button":"NOTIFY ME →", "signup.note.html":"Or write to <a href=\"mailto:info@bitogames.com\">info@bitogames.com</a>", "signup.ok":"> Signal locked. You're on the list — watch your inbox.", "signup.sending":"> Transmitting signal…", "signup.fail":"> Transmission failed. Retry in a moment.", "signup.invalid":"Please enter a valid email.", "nav.about":"About", "nav.home":"← Studio", "nav.back":"BACK",
+        "hero.title":"CROSS-PLATFORM", "hero.subtitle":"native software & games",
+        "hero.tagline.html":"Independent software and game development. <strong>Native</strong> applications and games for <strong>desktop</strong> platforms.",
+        "hero.status":"STATUS: TWO UNIVERSES IN DEVELOPMENT",
+        "about.title":"// ABOUT",
+        "about.p1.html":"BITO GAMES is an <strong>independent</strong> indie studio based on the <strong>Côte d'Azur</strong>. We build software and games <strong>natively</strong> for the platforms we love — Linux, macOS and Windows.",
+        "about.p2.html":"Game engine: <a href=\"https://godotengine.org\" target=\"_blank\" rel=\"noopener\">Godot</a> — for every game. Desktop applications: <strong>GTK4 + libadwaita</strong> with <strong>Python</strong>. Distributed on <a href=\"https://store.steampowered.com\" target=\"_blank\" rel=\"noopener\">Steam</a>, <a href=\"https://itch.io\" target=\"_blank\" rel=\"noopener\">Itch.io</a>, and right here.",
+        "about.quote":"Cross-platform — but always native.",
+        "universes.title":"// CHOOSE A UNIVERSE",
+        "universes.nova.cta":"ENTER →", "universes.nova.tag":"Premium sci-fi simulations",
+        "universes.pixel.cta":"ENTER →", "universes.pixel.tag":"Warm retro pixel worlds",
+        "footer.copy":"© 2026 BITO GAMES · Côte d'Azur · Built native",
+        /* NOVA */
+        "nova.sector":"SECTOR // NOVA UNIVERSE", "nova.eyebrow":"THE SIMULATIONS DIVISION",
+        "nova.tagline":"Deep systems. Living worlds. Simulations you can lose yourself in.",
+        "nova.status":"STATUS // 3 SIMULATIONS IN DEVELOPMENT",
+        "nova.games.title":"SIMULATIONS",
+        "nova.games.sub":"Systemic sandboxes, built native. Cross-platform — always native.",
+        "nova.footer":"NOVA UNIVERSE // BITO GAMES — Côte d'Azur",
+        /* PIXEL */
+        "px.back":"◄ BITO Games", "px.crumb":"Pixel Art Universe", "px.nav.games":"Games",
+        "px.hero.sign":"Small Worlds, Big Margins",
+        "px.hero.lede":"Hand-made 2D games about trade, routes and clever little economies. Same simple pieces every run — a brand-new puzzle every time.",
+        "px.hero.cta":"▼ Play the Lineup",
+        "px.games.title":"The Lineup", "px.games.sub":"Two trade-puzzle worlds, one pixel at a time.",
+        "px.dl.heading":"Get it on", "px.dl.note":"Store links land when each build ships.",
+        "px.dl.tip":"Not out yet — wishlist soon!",
+        /* shared status + downloads */
+        "status.dev":"In Development", "status.playable":"Playable",
+        "dl.aria":"Downloads", "dl.soon":"Coming soon"
+      },
+      hu: {
+        "page.title":"BITO GAMES — Független szoftver- és játékfejlesztő stúdió",
+        "page.desc":"Független szoftver- és játékfejlesztő stúdió. Natív alkalmazások és játékok asztali platformokra — két univerzum: NOVA szimulációk és Pixel Art világok.",
+        "nav.universes":"Univerzumok", "nav.nova":"NOVA", "nav.pixel":"PIXEL", "signup.title":"// CSATLAKOZZ A JELHEZ", "signup.desc":"Szólunk, amikor az első játék megjelenik. Semmi spam, csak hírek.", "signup.placeholder":"email@cimed.hu", "signup.button":"ÉRTESÍTS →", "signup.note.html":"Vagy írj: <a href=\"mailto:info@bitogames.com\">info@bitogames.com</a>", "signup.ok":"> Jel rögzítve. Rajta vagy a listán — figyeld a postaládád.", "signup.sending":"> Jel küldése…", "signup.fail":"> A küldés nem sikerült. Próbáld újra egy pillanat múlva.", "signup.invalid":"Adj meg egy érvényes e-mail címet.", "nav.about":"Rólunk", "nav.home":"← Stúdió", "nav.back":"VISSZA",
+        "hero.title":"CROSS-PLATFORM", "hero.subtitle":"natív szoftver és játékok",
+        "hero.tagline.html":"Független szoftver- és játékfejlesztés. <strong>Natív</strong> alkalmazások és játékok <strong>asztali</strong> platformokra.",
+        "hero.status":"ÁLLAPOT: KÉT UNIVERZUM FEJLESZTÉS ALATT",
+        "about.title":"// RÓLUNK",
+        "about.p1.html":"A BITO GAMES egy <strong>független</strong> indie stúdió a <strong>Francia Riviérán</strong>. Szoftvereket és játékokat fejlesztünk <strong>natívan</strong> azokra a platformokra, amiket szeretünk — Linux, macOS és Windows.",
+        "about.p2.html":"Játékmotor: <a href=\"https://godotengine.org\" target=\"_blank\" rel=\"noopener\">Godot</a> — minden játékhoz. Asztali alkalmazások: <strong>GTK4 + libadwaita</strong>, <strong>Python</strong>nal. Disztribúció: <a href=\"https://store.steampowered.com\" target=\"_blank\" rel=\"noopener\">Steam</a>, <a href=\"https://itch.io\" target=\"_blank\" rel=\"noopener\">Itch.io</a>, és itt.",
+        "about.quote":"Többplatformos — de mindig natív.",
+        "universes.title":"// VÁLASSZ UNIVERZUMOT",
+        "universes.nova.cta":"BELÉPÉS →", "universes.nova.tag":"Prémium sci-fi szimulációk",
+        "universes.pixel.cta":"BELÉPÉS →", "universes.pixel.tag":"Meleg, retró pixel-világok",
+        "footer.copy":"© 2026 BITO GAMES · Francia Riviéra · Natív fejlesztés",
+        "nova.sector":"SZEKTOR // NOVA UNIVERZUM", "nova.eyebrow":"A SZIMULÁCIÓS RÉSZLEG",
+        "nova.tagline":"Mély rendszerek. Élő világok. Szimulációk, amelyekben elveszel.",
+        "nova.status":"STÁTUSZ // 3 SZIMULÁCIÓ FEJLESZTÉS ALATT",
+        "nova.games.title":"SZIMULÁCIÓK",
+        "nova.games.sub":"Rendszer-vezérelt sandbox-világok, natívan építve. Többplatformos — mindig natív.",
+        "nova.footer":"NOVA UNIVERZUM // BITO GAMES — Francia Riviéra",
+        "px.back":"◄ BITO Games", "px.crumb":"Pixel Art Univerzum", "px.nav.games":"Játékok",
+        "px.hero.sign":"Kis világok, nagy haszon",
+        "px.hero.lede":"Kézzel készített 2D játékok kereskedelemről, útvonalakról és okos kis gazdaságokról. Minden futásban ugyanazok az egyszerű elemek — mégis mindig új fejtörő.",
+        "px.hero.cta":"▼ Nézd a felhozatalt",
+        "px.games.title":"A felhozatal", "px.games.sub":"Két kereskedős fejtörő-világ, pixelről pixelre.",
+        "px.dl.heading":"Töltsd le", "px.dl.note":"A bolti linkek az egyes buildek megjelenésekor kerülnek ki.",
+        "px.dl.tip":"Még nincs kint — hamarosan felveheted a kívánságlistádra!",
+        "status.dev":"Fejlesztés alatt", "status.playable":"Játszható",
+        "dl.aria":"Letöltések", "dl.soon":"Hamarosan"
+      },
+      zh: {
+        "page.title":"BITO GAMES — 独立软件与游戏工作室",
+        "page.desc":"独立软件与游戏开发工作室。为桌面平台打造原生应用与游戏——两个宇宙：NOVA 模拟与像素艺术世界。",
+        "nav.universes":"宇宙", "nav.nova":"NOVA", "nav.pixel":"PIXEL", "signup.title":"// 加入信号", "signup.desc":"第一款游戏发布时通知你。无垃圾邮件。", "signup.placeholder":"your@email.com", "signup.button":"通知我 →", "signup.note.html":"或写信至 <a href=\"mailto:info@bitogames.com\">info@bitogames.com</a>", "signup.ok":"> 信号已锁定。你已在名单中——请注意查收邮件。", "signup.sending":"> 正在发送信号…", "signup.fail":"> 发送失败，请稍后重试。", "signup.invalid":"请输入有效的电子邮箱地址。", "nav.about":"关于", "nav.home":"← 工作室", "nav.back":"返回",
+        "hero.title":"CROSS-PLATFORM", "hero.subtitle":"原生软件与游戏",
+        "hero.tagline.html":"独立软件与游戏开发工作室。为桌面平台打造<strong>原生</strong>应用与游戏。",
+        "hero.status":"状态：两个宇宙开发中",
+        "about.title":"// 关于",
+        "about.p1.html":"BITO GAMES 是一家位于蔚蓝海岸的<strong>独立</strong>工作室，为我们热爱的平台——Linux、macOS、Windows——<strong>原生</strong>开发软件与游戏。",
+        "about.p2.html":"游戏引擎：<a href=\"https://godotengine.org\" target=\"_blank\" rel=\"noopener\">Godot</a>。桌面应用：<strong>GTK4 + libadwaita</strong>（<strong>Python</strong>）。发行于 <a href=\"https://store.steampowered.com\" target=\"_blank\" rel=\"noopener\">Steam</a>、<a href=\"https://itch.io\" target=\"_blank\" rel=\"noopener\">Itch.io</a>，以及这里。",
+        "about.quote":"跨平台——但始终原生。",
+        "universes.title":"// 选择一个宇宙",
+        "universes.nova.cta":"进入 →", "universes.nova.tag":"高端科幻模拟",
+        "universes.pixel.cta":"进入 →", "universes.pixel.tag":"温暖的复古像素世界",
+        "footer.copy":"© 2026 BITO GAMES · 蔚蓝海岸 · 原生打造",
+        "nova.sector":"区域 // NOVA 宇宙", "nova.eyebrow":"模拟部门",
+        "nova.tagline":"深层系统。鲜活世界。令你沉浸的模拟。",
+        "nova.status":"状态 // 3 款模拟开发中",
+        "nova.games.title":"模拟作品",
+        "nova.games.sub":"系统化沙盒，原生打造。跨平台——始终原生。",
+        "nova.footer":"NOVA 宇宙 // BITO GAMES — 蔚蓝海岸",
+        "px.back":"◄ BITO Games", "px.crumb":"像素艺术宇宙", "px.nav.games":"游戏",
+        "px.hero.sign":"小世界，大利润",
+        "px.hero.lede":"手工打造的 2D 游戏，关于贸易、路线与精巧的小经济。每局相同的简单元素，却是全新的谜题。",
+        "px.hero.cta":"▼ 查看阵容",
+        "px.games.title":"游戏阵容", "px.games.sub":"两个贸易解谜世界，一次一个像素。",
+        "px.dl.heading":"获取方式", "px.dl.note":"各版本上线时将提供商店链接。",
+        "px.dl.tip":"尚未发布 — 敬请期待加入愿望单！",
+        "status.dev":"开发中", "status.playable":"可游玩",
+        "dl.aria":"下载", "dl.soon":"即将推出"
+      }
+    };
+
+    function t(key){
+      var d = TRANSLATIONS[currentLang];
+      if(d && d[key] != null) return d[key];
+      if(TRANSLATIONS.en[key] != null) return TRANSLATIONS.en[key];
+      return key;
+    }
+    function pick(obj){
+      if(obj == null) return '';
+      if(typeof obj === 'string') return obj;
+      return obj[currentLang] != null ? obj[currentLang] : (obj.en != null ? obj.en : '');
+    }
+    function esc(s){
+      return String(s).replace(/[&<>"']/g, function(c){
+        return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c];
+      });
+    }
+
+    function applyLang(lang){
+      if(!TRANSLATIONS[lang]) lang = DEFAULT_LANG;
+      currentLang = lang;
+      document.documentElement.lang = lang;
+      var d = TRANSLATIONS[lang];
+
+      document.querySelectorAll('[data-i18n]').forEach(function(el){
+        var v = t(el.getAttribute('data-i18n'));
+        if(v != null) el.textContent = v;
+      });
+      document.querySelectorAll('[data-i18n-html]').forEach(function(el){
+        var v = t(el.getAttribute('data-i18n-html'));
+        if(v != null) el.innerHTML = v;
+      });
+      document.querySelectorAll('[data-i18n-attr]').forEach(function(el){
+        el.getAttribute('data-i18n-attr').split(',').forEach(function(pair){
+          var p = pair.split(':'); var attr = (p[0]||'').trim(); var key = (p[1]||'').trim();
+          if(attr && key) el.setAttribute(attr, t(key));
+        });
+      });
+
+      if(d['page.title']) document.title = d['page.title'];
+
+      document.querySelectorAll('.lang-btn').forEach(function(b){
+        var on = b.getAttribute('data-lang') === lang;
+        b.classList.toggle('is-active', on);
+        b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+
+      // re-render dynamic world content so localized copy updates
+      renderNova();
+      renderPixel();
+    }
+
+    function bindLang(){
+      document.querySelector('.lang-switch').addEventListener('click', function(e){
+        var btn = e.target.closest('.lang-btn'); if(!btn) return;
+        var lang = btn.getAttribute('data-lang');
+        try{ localStorage.setItem(STORAGE_KEY, lang); }catch(err){}
+        applyLang(lang);
+      });
+    }
+    function resolveLang(){
+      try{
+        var s = localStorage.getItem(STORAGE_KEY);
+        if(s && TRANSLATIONS[s]) return s;
+      }catch(err){}
+      return DEFAULT_LANG;
+    }
+
+    /* =============================================================
+       CARD RENDERERS (data-driven)
+       ============================================================= */
+    function novaDownloadCell(value, label){
+      var soon = (value === 'soon' || !value);
+      if(soon){
+        return '<span class="nv-dl nv-dl--soon" aria-disabled="true" title="'+esc(t('dl.soon'))+'">'
+          + '<span class="nv-dl-os">'+esc(label)+'</span>'
+          + '<span class="nv-dl-state">'+esc(t('dl.soon'))+'</span></span>';
+      }
+      return '<a class="nv-dl nv-dl--live" href="'+esc(value)+'" rel="noopener">'
+        + '<span class="nv-dl-os">'+esc(label)+'</span><span class="nv-dl-state">↓</span></a>';
+    }
+
+    function renderNova(){
+      var grid = document.getElementById('nv-game-grid');
+      if(!grid) return;
+      grid.innerHTML = GAMES.nova.map(function(g, i){
+        var stKey = g.status === STATUS.PLAYABLE ? 'status.playable' : 'status.dev';
+        var stClass = g.status === STATUS.PLAYABLE ? 'is-playable' : 'is-dev';
+        var tags = g.tags.map(function(tag){ return '<li class="nv-tag">'+esc(tag)+'</li>'; }).join('');
+        var dls = PLATFORMS.map(function(p){ return novaDownloadCell(g.downloads[p], OS_LABEL[p]); }).join('');
+        var hull = g.id.split('-').pop().toUpperCase();
+        return '<article class="nv-card '+stClass+'" data-game-id="'+esc(g.id)+'" style="--i:'+i+'" tabindex="-1">'
+          + '<div class="nv-card-top">'
+          +   '<span class="nv-status '+stClass+'"><span class="nv-status-led" aria-hidden="true"></span>'+esc(t(stKey))+'</span>'
+          +   '<span class="nv-card-id" aria-hidden="true">NV-'+esc(hull)+'</span>'
+          + '</div>'
+          + '<h3 class="nv-card-title">'+esc(g.title)+'</h3>'
+          + '<p class="nv-card-tagline">'+esc(pick(g.tagline))+'</p>'
+          + '<p class="nv-card-desc">'+esc(pick(g.desc))+'</p>'
+          + '<ul class="nv-tags">'+tags+'</ul>'
+          + '<div class="nv-dl-block">'
+          +   '<span class="nv-dl-heading">'+esc(t('dl.aria'))+'</span>'
+          +   '<div class="nv-dl-row" role="group" aria-label="'+esc(t('dl.aria'))+'">'+dls+'</div>'
+          + '</div>'
+          + '</article>';
+      }).join('');
+    }
+
+    var PX_OS = [
+      { key:'windows', label:'Windows', glyph:'<rect x="1" y="1" width="6" height="6"/><rect x="9" y="1" width="6" height="6"/><rect x="1" y="9" width="6" height="6"/><rect x="9" y="9" width="6" height="6"/>' },
+      { key:'macos', label:'macOS', glyph:'<rect x="6" y="1" width="2" height="2"/><rect x="4" y="3" width="8" height="2"/><rect x="3" y="5" width="10" height="6"/><rect x="4" y="11" width="3" height="2"/><rect x="9" y="11" width="3" height="2"/>' },
+      { key:'linux', label:'Linux', glyph:'<rect x="5" y="2" width="6" height="7"/><rect x="4" y="9" width="8" height="4"/>' }
+    ];
+    function pxDownloadRow(){
+      return PX_OS.map(function(os){
+        return '<button type="button" class="px-dl" disabled aria-disabled="true"'
+          + ' aria-label="'+esc(OS_LABEL[os.key]+' — '+t('dl.soon'))+'"'
+          + ' data-tip="'+esc(t('px.dl.tip'))+'">'
+          + '<svg class="px-dl__glyph" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">'+os.glyph+'</svg>'
+          + '<span class="px-dl__os">'+esc(os.label)+'</span>'
+          + '<span class="px-dl__tag">'+esc(t('dl.soon'))+'</span>'
+          + '</button>';
+      }).join('');
+    }
+    function renderPixel(){
+      var grid = document.querySelector('#pixel-games .px-grid');
+      if(!grid) return;
+      grid.setAttribute('role','list');
+      grid.innerHTML = GAMES.pixel.map(function(g){
+        var stKey = g.status === STATUS.PLAYABLE ? 'status.playable' : 'status.dev';
+        var stClass = g.status === STATUS.PLAYABLE ? 'is-playable' : 'is-dev';
+        var tags = g.tags.map(function(tag){ return '<span class="px-tagpill">'+esc(tag)+'</span>'; }).join('');
+        var cover = g.cover || 'feke';
+        return '<article class="px-card" role="listitem">'
+          + '<div class="px-card__cover '+esc(cover)+'" aria-hidden="true">'
+          +   '<h3 class="px-card__title px-h">'+esc(g.title)+'</h3>'
+          + '</div>'
+          + '<div class="px-card__body">'
+          +   '<div class="px-tag-row">'+tags
+          +     '<span class="px-status '+stClass+'">'+esc(t(stKey))+'</span></div>'
+          +   '<p class="px-card__tagline">'+esc(pick(g.tagline))+'</p>'
+          +   '<p class="px-card__desc">'+esc(pick(g.desc))+'</p>'
+          +   '<div class="px-tray">'
+          +     '<h4 class="px-h px-h--sm">'+esc(t('px.dl.heading'))+'</h4>'
+          +     '<div class="px-dl-row" role="group" aria-label="'+esc(t('dl.aria'))+'">'+pxDownloadRow()+'</div>'
+          +     '<p class="px-tray__note">'+esc(t('px.dl.note'))+'</p>'
+          +   '</div>'
+          + '</div>'
+          + '</article>';
+      }).join('');
+    }
+
+    /* =============================================================
+       (C) SPA ROUTER
+       ============================================================= */
+    var VIEWS = ['landing','nova','pixel'];
+    var DEFAULT_VIEW = 'landing';
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+    function routeFromHash(){
+      var h = (location.hash || '').replace('#','');
+      return VIEWS.indexOf(h) !== -1 ? h : DEFAULT_VIEW;
+    }
+
+    function showView(view, opts){
+      opts = opts || {};
+      if(VIEWS.indexOf(view) === -1) view = DEFAULT_VIEW;
+
+      document.querySelectorAll('.view').forEach(function(s){
+        var match = s.dataset.view === view;
+        s.hidden = !match;
+        s.classList.toggle('is-active', match);
+        if(match && !reduceMotion){
+          s.classList.remove('view--enter');
+          void s.offsetWidth;
+          s.classList.add('view--enter');
+        }
+      });
+
+      document.body.dataset.view = view;
+      window.scrollTo(0, 0);
+
+      // world lifecycles
+      if(view === 'nova'){ startStars(); } else { stopStars(); }
+      startMatrixIfLanding();
+
+      // focus + announce
+      if(opts.focus !== false){
+        var target = document.querySelector('#view-'+view+' [tabindex="-1"]');
+        if(target){ try{ target.focus({preventScroll:true}); }catch(e){ target.focus(); } }
+      }
+      var label = { landing:'BITO Games', nova:'NOVA Universe', pixel:'Pixel Art Universe' }[view];
+      var live = document.getElementById('live-region');
+      if(live) live.textContent = label;
+
+      if(opts.push !== false){
+        var wantHash = view === 'landing' ? '' : ('#'+view);
+        if(location.hash !== wantHash){
+          try{ history.pushState(null, '', view === 'landing' ? (location.pathname + location.search) : wantHash); }
+          catch(e){ location.hash = view === 'landing' ? '' : view; }
+        }
+      }
+    }
+
+    function bindNav(){
+      document.querySelectorAll('[data-goto]').forEach(function(b){
+        b.addEventListener('click', function(e){
+          e.preventDefault();
+          showView(b.getAttribute('data-goto'));
+        });
+      });
+      window.addEventListener('popstate', function(){
+        showView(routeFromHash(), { push:false });
+      });
+    }
+
+    /* =============================================================
+       MATRIX RAIN (landing only) — purple
+       ============================================================= */
+    var matrix = (function(){
+      var canvas = document.getElementById('matrix-canvas');
+      var ctx = canvas ? canvas.getContext('2d') : null;
+      var chars = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン0123456789';
+      var arr = chars.split('');
+      var fontSize = 16, columns = 0, drops = [], raf = null, last = 0, interval = 70;
+
+      function resize(){
+        if(!canvas) return;
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        columns = Math.floor(canvas.width / fontSize);
+        drops = new Array(columns).fill(1).map(function(){ return Math.random() * -100; });
+      }
+      function frame(now){
+        if(now - last > interval){
+          ctx.fillStyle = 'rgba(7,5,16,0.09)';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.font = fontSize + "px 'SFMono-Regular', ui-monospace, monospace";
+          for(var i=0;i<drops.length;i++){
+            var text = arr[Math.floor(Math.random()*arr.length)];
+            var x = i*fontSize, y = drops[i]*fontSize;
+            var r = Math.random();
+            if(r > 0.975) ctx.fillStyle = '#e9d4ff';
+            else if(r > 0.92) ctx.fillStyle = '#ff4dd2';
+            else if(r > 0.5) ctx.fillStyle = '#7a3fd0';
+            else ctx.fillStyle = '#b26bff';
+            ctx.fillText(text, x, y);
+            if(y > canvas.height && Math.random() > 0.975) drops[i] = 0;
+            drops[i]++;
+          }
+          last = now;
+        }
+        raf = requestAnimationFrame(frame);
+      }
+      function paintStatic(){
+        if(!ctx) return;
+        ctx.fillStyle = '#070510';
+        ctx.fillRect(0,0,canvas.width,canvas.height);
+      }
+      function start(){
+        if(!ctx || raf) return;
+        if(reduceMotion){ paintStatic(); return; }
+        raf = requestAnimationFrame(frame);
+      }
+      function stop(){ if(raf){ cancelAnimationFrame(raf); raf = null; } }
+      if(canvas){
+        resize();
+        var rt;
+        window.addEventListener('resize', function(){ clearTimeout(rt); rt = setTimeout(resize, 150); });
+        document.addEventListener('visibilitychange', function(){
+          if(document.hidden) stop();
+          else if(document.body.dataset.view === 'landing') start();
+        });
+      }
+      return { start:start, stop:stop };
+    })();
+
+    function startMatrixIfLanding(){
+      if(document.body.dataset.view === 'landing' && !document.hidden) matrix.start();
+      else matrix.stop();
+    }
+
+    /* =============================================================
+       NOVA STARFIELD
+       ============================================================= */
+    var stars = (function(){
+      var canvas = document.getElementById('nv-stars');
+      var ctx = canvas ? canvas.getContext('2d') : null;
+      var list = [], raf = null, last = 0;
+      function count(){ return window.innerWidth <= 640 ? 70 : 140; }
+      function seed(){
+        list = [];
+        var n = count();
+        for(var i=0;i<n;i++){
+          var p = Math.random();
+          var color = p > 0.92 ? '233,196,106' : (p > 0.77 ? '111,233,255' : '195,210,232');
+          list.push({
+            x:Math.random(), y:Math.random(),
+            r:0.4 + Math.random()*1.2,
+            base:0.25 + Math.random()*0.65,
+            phase:Math.random()*Math.PI*2,
+            color:color
+          });
+        }
+      }
+      function resize(){
+        if(!canvas) return;
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      function drawFrame(now){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        for(var i=0;i<list.length;i++){
+          var s = list[i];
+          s.y -= 0.00004;
+          if(s.y < 0) s.y += 1;
+          var a = s.base * (0.6 + 0.4*Math.sin(s.phase + now*0.002));
+          ctx.fillStyle = 'rgba('+s.color+','+a.toFixed(3)+')';
+          ctx.beginPath();
+          ctx.arc(s.x*canvas.width, s.y*canvas.height, s.r, 0, Math.PI*2);
+          ctx.fill();
+        }
+      }
+      function frame(now){
+        if(now - last >= 33){ drawFrame(now); last = now; }
+        raf = requestAnimationFrame(frame);
+      }
+      function start(){
+        if(!ctx || raf) return;
+        resize();
+        if(!list.length) seed();
+        if(reduceMotion){ drawFrame(0); return; }
+        raf = requestAnimationFrame(frame);
+      }
+      function stop(){ if(raf){ cancelAnimationFrame(raf); raf = null; } }
+      if(canvas){
+        var rt;
+        window.addEventListener('resize', function(){
+          clearTimeout(rt);
+          rt = setTimeout(function(){ resize(); seed(); }, 150);
+        });
+        document.addEventListener('visibilitychange', function(){
+          if(document.hidden) stop();
+          else if(document.body.dataset.view === 'nova') start();
+        });
+      }
+      return { start:start, stop:stop };
+    })();
+    function startStars(){ if(!document.hidden) stars.start(); }
+    function stopStars(){ stars.stop(); }
+
+    /* =============================================================
+       INIT
+       ============================================================= */
+    function init(){
+      renderNova();
+      renderPixel();
+      applyLang(resolveLang());
+      bindLang();
+      bindNav();
+      showView(routeFromHash(), { push:false, focus:false });
+    }
+
+    if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+    else init();
+  })();
+  </script>
+<script>
+  // Feliratkozás — ÉLES FormSubmit AJAX (ugyanaz a végpont, ami a régi oldalon már működik):
+  // info@bitogames.com -> Porkbun forwarding -> Thémisz postafiók.
+  (function(){
+    var f=document.getElementById('signup-form'), st=document.getElementById('signup-status');
+    if(!f||!st) return;
+    function T(k,fb){ try{ return (window.__t && window.__t(k)) || fb; }catch(e){ return fb; } }
+    f.addEventListener('submit', function(e){
+      e.preventDefault();
+      var i=f.querySelector('input[type=email]');
+      var val=(i&&i.value||'').trim();
+      if(!val || val.indexOf('@')<1 || val.indexOf('.')<0){
+        st.className='signup-status is-err'; st.textContent=T('signup.invalid','Please enter a valid email.'); return;
+      }
+      var btn=f.querySelector('button[type=submit]'); if(btn) btn.disabled=true;
+      st.className='signup-status'; st.textContent=T('signup.sending','> Transmitting signal…');
+      fetch('https://formsubmit.co/ajax/info@bitogames.com',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Accept':'application/json'},
+        body:JSON.stringify({ email:val, _subject:'New subscriber — bitogames.com', _template:'table', _captcha:'false' })
+      }).then(function(r){return r.json();}).then(function(d){
+        if(d && String(d.success)==='true'){
+          st.className='signup-status is-ok'; st.textContent=T('signup.ok',"> Signal locked. You're on the list — watch your inbox."); f.reset();
+        } else { st.className='signup-status is-err'; st.textContent=T('signup.fail','> Transmission failed. Retry in a moment.'); }
+      }).catch(function(){
+        st.className='signup-status is-err'; st.textContent=T('signup.fail','> Transmission failed. Retry in a moment.');
+      }).finally(function(){ if(btn) btn.disabled=false; });
+    });
+  })();
+</script>
 </body>
 </html>
