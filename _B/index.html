@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#07080c">
+
+  <title data-i18n="page.title">BITO Games — NOVA Universe · native city-building &amp; economic sims</title>
+  <meta name="description" data-i18n="page.desc" data-i18n-attr="content" content="BITO Games is a solo indie studio on the Côte d'Azur building the NOVA Universe — two near-future strategy games in development: Cyber City 2089, a cyberpunk city builder, and Megacorp 2100, a sci-fi economic simulation. Native for Linux and macOS, built in Godot.">
+
+  <!-- Open Graph / social -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="BITO Games — NOVA Universe">
+  <meta property="og:description" content="Two near-future strategy games in development. Native for Linux and macOS, built in Godot.">
+  <meta property="og:locale" content="en">
+
+  <!-- Fonts: Space Grotesk (display/body) + Chakra Petch (mono-flavoured accents) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Chakra+Petch:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient matrix-rain canvas: low-opacity texture, gated by reduced-motion -->
+  <canvas id="matrix-canvas" aria-hidden="true"></canvas>
+  <div class="scanlines" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
+
+  <a class="skip-link" href="#games">Skip to games</a>
+
+  <!-- ============================ NAV ============================ -->
+  <header class="nav" id="nav">
+    <div class="nav__inner">
+      <a class="nav__brand" href="#top" aria-label="BITO Games — home">
+        <span class="nav__brand-bracket">[</span><span class="nav__brand-name">BITO</span><span class="nav__brand-sub">GAMES</span><span class="nav__brand-bracket">]</span>
+      </a>
+
+      <nav class="nav__links" aria-label="Primary">
+        <a href="#universe" data-i18n="nav.universe">Universe</a>
+        <a href="#games" data-i18n="nav.games">Games</a>
+        <a href="#studio" data-i18n="nav.studio">Studio</a>
+        <a href="#contact" class="nav__cta" data-i18n="nav.contact">Contact</a>
+      </nav>
+
+      <button class="nav__toggle" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- ============================ HERO ============================ -->
+    <section class="hero" id="hero">
+      <div class="hero__frame" aria-hidden="true">
+        <span class="bracket bracket--tl"></span>
+        <span class="bracket bracket--tr"></span>
+        <span class="bracket bracket--bl"></span>
+        <span class="bracket bracket--br"></span>
+      </div>
+
+      <div class="hero__inner">
+        <p class="hero__presents reveal" data-i18n="hero.presents">BITO Games presents</p>
+
+        <h1 class="hero__title reveal" data-glitch="NOVA UNIVERSE" data-i18n="hero.title">NOVA UNIVERSE</h1>
+
+        <p class="hero__subtitle reveal" data-i18n="hero.subtitle">Two worlds. One studio.</p>
+
+        <p class="hero__tagline reveal" data-i18n="hero.tagline.html">A shared near-future continuity, split across two genres — and <strong>two games built as equals</strong>. A city to keep alive. A corporation to make unstoppable. Both <strong>native</strong>, both in development.</p>
+
+        <div class="hero__status reveal" role="status">
+          <span class="hero__status-dot" aria-hidden="true"></span>
+          <span class="hero__status-text" id="hero-status" data-i18n="hero.status" data-typewriter>STATUS: TWO TITLES IN DEVELOPMENT</span>
+        </div>
+
+        <a href="#universe" class="hero__cta reveal" data-i18n="hero.cta">Enter the universe ↓</a>
+      </div>
+    </section>
+
+    <!-- ============================ UNIVERSE ============================ -->
+    <section class="universe section" id="universe">
+      <div class="section__inner universe__inner">
+        <div class="universe__copy">
+          <h2 class="section__title reveal" data-i18n="universe.title">// THE NOVA UNIVERSE</h2>
+          <p class="section__intro reveal" data-i18n="universe.intro">One timeline. Two games that never compete for the spotlight.</p>
+          <p class="prose reveal" data-i18n="universe.p1.html">NOVA isn't a single game — it's the <strong>continuity</strong> that ties BITO's titles together. Same century, same slow collapse of the line between city and corporation, viewed from two ends of the telescope.</p>
+          <p class="prose reveal" data-i18n="universe.p2.html">In <strong>Cyber City 2089</strong> you govern from the street up: districts, citizens, infrastructure, the welfare slider that decides who the future is for. In <strong>Megacorp 2100</strong> you build from the boardroom down: supply chains, markets, and the quiet art of owning everything. Different verbs, one world.</p>
+        </div>
+
+        <!-- Diegetic data panel — parallax target -->
+        <aside class="universe__panel reveal" data-parallax="0.18" aria-hidden="true">
+          <div class="panel">
+            <div class="panel__head">
+              <span class="panel__bracket">[</span>
+              <span class="panel__title">NOVA // TIMELINE</span>
+              <span class="panel__bracket">]</span>
+            </div>
+            <ul class="panel__rows">
+              <li><span class="panel__year">2089</span><span class="panel__entry">Cyber City — street-level governance</span></li>
+              <li><span class="panel__year">2094</span><span class="panel__entry">The Consolidation Acts</span></li>
+              <li><span class="panel__year">2100</span><span class="panel__entry">Megacorp — boardroom dominion</span></li>
+              <li><span class="panel__year">21XX</span><span class="panel__entry">[ CLASSIFIED ]</span></li>
+            </ul>
+            <div class="panel__foot">
+              <span class="panel__pulse"></span>
+              <span>CONTINUITY: STABLE</span>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ============================ GAMES ============================ -->
+    <section class="games section" id="games">
+      <div class="section__inner">
+        <header class="games__header">
+          <h2 class="section__title reveal" data-i18n="games.title">// IN DEVELOPMENT</h2>
+          <p class="section__intro reveal" data-i18n="games.intro">Two titles, equal billing. Pick the seat you want — the mayor's office or the corner office.</p>
+        </header>
+
+        <div class="games__grid">
+
+          <!-- ----- CYBER CITY 2089 ----- -->
+          <article class="card card--cyber reveal" tabindex="0">
+            <div class="card__keyart" aria-hidden="true">
+              <div class="card__keyart-grid"></div>
+              <div class="card__keyart-skyline"></div>
+              <span class="card__keyart-tag">// KEY ART — WIP</span>
+              <span class="bracket bracket--tl"></span>
+              <span class="bracket bracket--br"></span>
+            </div>
+
+            <div class="card__body">
+              <span class="card__badge" data-i18n="games.cybercity.badge">IN DEVELOPMENT</span>
+              <h3 class="card__title" data-i18n="games.cybercity.title">CYBER CITY 2089</h3>
+              <p class="card__subtitle" data-i18n="games.cybercity.subtitle">Cyberpunk City Builder</p>
+              <p class="card__desc" data-i18n="games.cybercity.desc">Govern a sprawling neon city where every district has a price and every citizen has a breaking point. Balance infrastructure, unrest, and the welfare slider that quietly decides who the future belongs to. A city builder with a conscience and a body count.</p>
+
+              <ul class="card__tags">
+                <li data-i18n="games.cybercity.tag1">City Builder</li>
+                <li data-i18n="games.cybercity.tag2">Cyberpunk</li>
+                <li data-i18n="games.cybercity.tag3">Simulation</li>
+                <li data-i18n="games.cybercity.tag4">Single-player</li>
+              </ul>
+
+              <dl class="card__meta">
+                <div class="card__meta-row"><span data-i18n="games.cybercity.meta.engine">Engine: Godot 4</span></div>
+                <div class="card__meta-row"><span data-i18n="games.cybercity.meta.status">Status: In development</span></div>
+                <div class="card__meta-row"><span data-i18n="games.cybercity.meta.platforms">Platforms: Linux · macOS (native)</span></div>
+              </dl>
+            </div>
+          </article>
+
+          <!-- ----- MEGACORP 2100 ----- -->
+          <article class="card card--corp reveal" tabindex="0">
+            <div class="card__keyart" aria-hidden="true">
+              <div class="card__keyart-grid"></div>
+              <div class="card__keyart-graph"></div>
+              <span class="card__keyart-tag">// KEY ART — WIP</span>
+              <span class="bracket bracket--tl"></span>
+              <span class="bracket bracket--br"></span>
+            </div>
+
+            <div class="card__body">
+              <span class="card__badge" data-i18n="games.megacorp.badge">IN DEVELOPMENT</span>
+              <h3 class="card__title" data-i18n="games.megacorp.title">MEGACORP 2100</h3>
+              <p class="card__subtitle" data-i18n="games.megacorp.subtitle">Sci-Fi Economic Simulation</p>
+              <p class="card__desc" data-i18n="games.megacorp.desc">A spiritual successor to Capitalism 2, set a decade further into the NOVA timeline. Engineer supply chains, corner markets, manufacture demand, and grow one company until it's bigger than the government that's supposed to regulate it. Deep economic strategy with teeth.</p>
+
+              <ul class="card__tags">
+                <li data-i18n="games.megacorp.tag1">Economic Sim</li>
+                <li data-i18n="games.megacorp.tag2">Sci-Fi</li>
+                <li data-i18n="games.megacorp.tag3">Strategy</li>
+                <li data-i18n="games.megacorp.tag4">Single-player</li>
+              </ul>
+
+              <dl class="card__meta">
+                <div class="card__meta-row"><span data-i18n="games.megacorp.meta.engine">Engine: Godot 4</span></div>
+                <div class="card__meta-row"><span data-i18n="games.megacorp.meta.status">Status: In development</span></div>
+                <div class="card__meta-row"><span data-i18n="games.megacorp.meta.platforms">Platforms: Linux · macOS (native)</span></div>
+              </dl>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ STUDIO ============================ -->
+    <section class="studio section" id="studio">
+      <div class="section__inner studio__inner">
+        <h2 class="section__title reveal" data-i18n="studio.title">// THE STUDIO</h2>
+
+        <div class="studio__grid">
+          <div class="studio__copy">
+            <p class="prose reveal" data-i18n="studio.p1.html">BITO Games is a <strong>one-person studio</strong> on the Côte d'Azur. I'm Sándor Bitó. I spent the first chapter of my life as a <strong>ballet dancer</strong> — years of turning relentless discipline into something that looks effortless. I build games the same way.</p>
+            <p class="prose reveal" data-i18n="studio.p2.html">Now I'm an <strong>AI-native indie developer</strong>: I pair decades of obsession with city-builders and economic sims with modern AI tooling to ship at a scale that used to need a team. The NOVA Universe is what comes out the other side.</p>
+            <p class="prose reveal" data-i18n="studio.p3.html">And it's <strong>built native</strong>. Core engine is <a href="https://godotengine.org" target="_blank" rel="noopener">Godot 4</a>, compiled for the platforms I actually use — <strong>Linux and macOS</strong> as first-class citizens, not afterthoughts. No web wrappers. No lowest-common-denominator ports. Headed for <a href="https://store.steampowered.com" target="_blank" rel="noopener">Steam</a>, <a href="https://itch.io" target="_blank" rel="noopener">itch.io</a>, and right here.</p>
+          </div>
+
+          <figure class="studio__quote reveal">
+            <span class="bracket bracket--tl" aria-hidden="true"></span>
+            <span class="bracket bracket--br" aria-hidden="true"></span>
+            <blockquote data-i18n="studio.quote">Cross-platform — but always native.</blockquote>
+            <figcaption data-i18n="studio.quote.attribution">— the only rule the studio doesn't break</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ SIGNUP / CONTACT ============================ -->
+    <section class="signup section" id="contact">
+      <div class="section__inner signup__inner reveal">
+        <div class="signup__panel">
+          <span class="bracket bracket--tl" aria-hidden="true"></span>
+          <span class="bracket bracket--tr" aria-hidden="true"></span>
+          <span class="bracket bracket--bl" aria-hidden="true"></span>
+          <span class="bracket bracket--br" aria-hidden="true"></span>
+
+          <h2 class="section__title" data-i18n="signup.title">// GET THE LAUNCH SIGNAL</h2>
+          <p class="section__intro" data-i18n="signup.desc">One list, both worlds. I'll write when Cyber City 2089 or Megacorp 2100 hits a playable milestone, opens a beta, or launches. No spam, no filler — just the signal.</p>
+
+          <form class="signup__form" id="signup-form" novalidate>
+            <label class="visually-hidden" for="signup-email">Email address</label>
+            <input
+              class="signup__input"
+              id="signup-email"
+              type="email"
+              name="email"
+              autocomplete="email"
+              required
+              data-i18n="signup.email.placeholder"
+              data-i18n-attr="placeholder"
+              placeholder="your@email.com">
+            <button class="signup__button" type="submit" data-i18n="signup.button">SEND THE SIGNAL →</button>
+          </form>
+          <p class="signup__msg" id="signup-msg" role="status" aria-live="polite"></p>
+
+          <p class="signup__note" data-i18n="signup.note.html">Or reach me directly at <a href="mailto:info@bitogames.com">info@bitogames.com</a></p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================ FOOTER ============================ -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <span class="footer__tagline" data-i18n="footer.tagline">BITO Games · NOVA Universe</span>
+      <span class="footer__copy" data-i18n="footer.copy">© 2026 BITO Games · Côte d'Azur · Built native</span>
+    </div>
+  </footer>
+
+  <script src="translations.js"></script>
+  <script src="matrix.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
